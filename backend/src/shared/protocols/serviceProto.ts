@@ -1,25 +1,9 @@
 import { ServiceProto } from 'tsrpc-proto';
-import { ReqAddUser, ResAddUser } from './user/PtlAddUser';
-import { ReqDelUsers, ResDelUsers } from './user/PtlDelUsers';
-import { ReqGetUsers, ResGetUsers } from './user/PtlGetUsers';
 import { ReqLogin, ResLogin } from './user/PtlLogin';
 import { ReqLogout, ResLogout } from './user/PtlLogout';
-import { ReqUpdateUser, ResUpdateUser } from './user/PtlUpdateUser';
 
 export interface ServiceType {
     api: {
-        "user/AddUser": {
-            req: ReqAddUser,
-            res: ResAddUser
-        },
-        "user/DelUsers": {
-            req: ReqDelUsers,
-            res: ResDelUsers
-        },
-        "user/GetUsers": {
-            req: ReqGetUsers,
-            res: ResGetUsers
-        },
         "user/Login": {
             req: ReqLogin,
             res: ResLogin
@@ -27,10 +11,6 @@ export interface ServiceType {
         "user/Logout": {
             req: ReqLogout,
             res: ResLogout
-        },
-        "user/UpdateUser": {
-            req: ReqUpdateUser,
-            res: ResUpdateUser
         }
     },
     msg: {
@@ -39,32 +19,8 @@ export interface ServiceType {
 }
 
 export const serviceProto: ServiceProto<ServiceType> = {
-    "version": 1,
+    "version": 2,
     "services": [
-        {
-            "id": 0,
-            "name": "user/AddUser",
-            "type": "api",
-            "conf": {
-                "needLogin": true
-            }
-        },
-        {
-            "id": 1,
-            "name": "user/DelUsers",
-            "type": "api",
-            "conf": {
-                "needLogin": true
-            }
-        },
-        {
-            "id": 2,
-            "name": "user/GetUsers",
-            "type": "api",
-            "conf": {
-                "needLogin": true
-            }
-        },
         {
             "id": 3,
             "name": "user/Login",
@@ -78,18 +34,10 @@ export const serviceProto: ServiceProto<ServiceType> = {
             "name": "user/Logout",
             "type": "api",
             "conf": {}
-        },
-        {
-            "id": 4,
-            "name": "user/UpdateUser",
-            "type": "api",
-            "conf": {
-                "needLogin": true
-            }
         }
     ],
     "types": {
-        "user/PtlAddUser/ReqAddUser": {
+        "user/PtlLogin/ReqLogin": {
             "type": "Interface",
             "extends": [
                 {
@@ -114,7 +62,7 @@ export const serviceProto: ServiceProto<ServiceType> = {
                 }
             ]
         },
-        "user/PtlAddUser/ResAddUser": {
+        "user/PtlLogin/ResLogin": {
             "type": "Interface",
             "extends": [
                 {
@@ -139,78 +87,6 @@ export const serviceProto: ServiceProto<ServiceType> = {
                 }
             ]
         },
-        "user/PtlDelUsers/ReqDelUsers": {
-            "type": "Interface",
-            "extends": [
-                {
-                    "id": 0,
-                    "type": {
-                        "type": "Reference",
-                        "target": "base/BaseRequest"
-                    }
-                }
-            ]
-        },
-        "user/PtlDelUsers/ResDelUsers": {
-            "type": "Interface",
-            "extends": [
-                {
-                    "id": 0,
-                    "type": {
-                        "type": "Reference",
-                        "target": "base/BaseResponse"
-                    }
-                }
-            ]
-        },
-        "user/PtlGetUsers/ReqGetUsers": {
-            "type": "Interface",
-            "extends": [
-                {
-                    "id": 0,
-                    "type": {
-                        "type": "Reference",
-                        "target": "base/BaseRequest"
-                    }
-                }
-            ]
-        },
-        "user/PtlGetUsers/ResGetUsers": {
-            "type": "Interface",
-            "extends": [
-                {
-                    "id": 0,
-                    "type": {
-                        "type": "Reference",
-                        "target": "base/BaseResponse"
-                    }
-                }
-            ]
-        },
-        "user/PtlLogin/ReqLogin": {
-            "type": "Interface",
-            "extends": [
-                {
-                    "id": 0,
-                    "type": {
-                        "type": "Reference",
-                        "target": "base/BaseRequest"
-                    }
-                }
-            ]
-        },
-        "user/PtlLogin/ResLogin": {
-            "type": "Interface",
-            "extends": [
-                {
-                    "id": 0,
-                    "type": {
-                        "type": "Reference",
-                        "target": "base/BaseResponse"
-                    }
-                }
-            ]
-        },
         "user/PtlLogout/ReqLogout": {
             "type": "Interface",
             "extends": [
@@ -224,30 +100,6 @@ export const serviceProto: ServiceProto<ServiceType> = {
             ]
         },
         "user/PtlLogout/ResLogout": {
-            "type": "Interface",
-            "extends": [
-                {
-                    "id": 0,
-                    "type": {
-                        "type": "Reference",
-                        "target": "base/BaseResponse"
-                    }
-                }
-            ]
-        },
-        "user/PtlUpdateUser/ReqUpdateUser": {
-            "type": "Interface",
-            "extends": [
-                {
-                    "id": 0,
-                    "type": {
-                        "type": "Reference",
-                        "target": "base/BaseRequest"
-                    }
-                }
-            ]
-        },
-        "user/PtlUpdateUser/ResUpdateUser": {
             "type": "Interface",
             "extends": [
                 {
