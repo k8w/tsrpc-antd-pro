@@ -1,0 +1,26 @@
+{
+  "name": "tsrpc-antd-admin-template-backend",
+  "version": "0.1.0",
+  "main": "index.js",
+  "private": true,
+  "scripts": {
+    "proto": "tsrpc proto --config tsrpc.config.ts",
+    "sync": "tsrpc sync --config tsrpc.config.ts",
+    "api": "tsrpc api --config tsrpc.config.ts",
+    "dev": "tsrpc dev --config tsrpc.config.ts",
+    "test": "mocha test/**/*.test.ts",
+    "build": "tsrpc build --config tsrpc.config.ts"
+  },
+  "devDependencies": {
+    "@types/mocha": "^8.2.3",
+    "@types/node": "^15.14.9",
+    "mocha": "^9.1.2",
+    "onchange": "^7.1.0",
+    "ts-node": "^10.2.1",
+    "tsrpc-cli": "^2.0.8",
+    "typescript": "^4.4.3"
+  },
+  "dependencies": {
+    "tsrpc": "^3.0.9"
+  }
+}

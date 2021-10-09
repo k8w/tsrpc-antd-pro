@@ -1,0 +1,125 @@
+// import { HttpClient } from 'tsrpc-browser';
+// import { TsrpcError } from 'tsrpc-proto';
+// import { Config } from '../configs/config';
+// import { PickSomeFlower } from '../shared/models/PickSomeFlower';
+// import { ResLogin } from '../shared/protocols/adminUser/PtlLogin';
+// import { serviceProto, ServiceType } from '../shared/protocols/proto';
+// import { Global } from './Global';
+
+// const LOCALSTORAGE_PREFIX = 'ByteQuizAdmin_';
+
+// export class ApiClient {
+
+//     private static _resLogin?: ResLogin | null;
+//     static get resLogin(): ResLogin | null {
+//         if (this._resLogin === undefined) {
+//             let local = localStorage.getItem(LOCALSTORAGE_PREFIX + '_RES_LOGIN_');
+//             this._resLogin = local ? JSON.parse(local) : null;
+//         }
+//         return this._resLogin!;
+//     }
+//     static set resLogin(resLogin: ResLogin | null) {
+//         this._resLogin = resLogin;
+//         localStorage.setItem(LOCALSTORAGE_PREFIX + '_RES_LOGIN_', JSON.stringify(resLogin));
+//     }
+
+//     static _client = new HttpClient(serviceProto, {
+//         server: Config.server,
+//         logger: console
+//     });
+
+//     static onNeedLogin() {
+//         if (Global.history.location.pathname !== '/login') {
+//             Global.history.replace('/login');
+//         }
+//     }
+
+//     static async callApi<T extends keyof ServiceType['api']>(apiName: T, req: Omit<ServiceType['api'][T]['req'], 'sso'>, abortKey?: string): Promise<ServiceType['api'][T]['res']> {
+//         let allowGuest = serviceProto.services.find(v => v.name === apiName)!.conf!.allowGuest;
+
+//         // callApi之外的所有接口都需要登录
+//         if (!allowGuest && !this.resLogin) {
+//             this.onNeedLogin();
+//             throw new TsrpcError('请先登录', { code: 'NEED_LOGIN' });
+//         }
+
+//         // 开发过程为方便使用MOCK数据
+//         // if (CC_DEBUG && this.mock && mockServer[apiName]) {
+//         //     this._client.logger.log(`[MockReq] ${apiName}`, req);
+
+//         //     let mockApi = mockServer[apiName] as <P extends T>(req: ServiceType['req'][P]) => ServiceType['res'][P];
+
+//         //     return new SuperPromise((rs, rj) => {
+//         //         setTimeout(() => {
+//         //             // 20%概率随机出错
+//         //             if (Math.random() > 0.9) {
+//         //                 this._client.logger.error(`[MockError] ${apiName}`);
+//         //                 rj(new TsrpcError('MockServer随机报错，需要异常处理', 'MOCK_RANDOM_ERROR'));
+//         //             }
+//         //             else {
+//         //                 let mockRes = mockApi(realReq);
+//         //                 if (mockRes.sso) {
+//         //                     this.sso = mockRes.sso;
+//         //                 }
+//         //                 this._client.logger.log(`[MockRes] ${apiName}`, mockRes);
+//         //                 rs(mockRes)
+//         //             }
+//         //         }, 500)
+//         //     })
+//         // }
+
+//         let ret = await this._client.callApi(apiName, {
+//             ...req,
+//             sso: this.resLogin?.sso
+//         }, {
+//             abortKey: abortKey
+//         });
+
+//         if (!ret.isSucc) {
+//             let error = ret.err;
+//             if (error.code === 'NEED_LOGIN') {
+//                 this.resLogin = null;
+//                 this.onNeedLogin();
+//             }
+
+//             if (error.type === 'NetworkError') {
+//                 error.message = '网络错误，请稍后再试。'
+//             }
+//             else if (error.type === 'ServerError') {
+//                 error.message = '服务器错误，请联系管理员。'
+//             }
+
+//             throw error;
+//         }
+
+//         return ret.res;
+//     };
+
+//     /** 上传图片可用 */
+//     static dataURL2Uint8Array(dataURI: string): Uint8Array {
+//         const BASE64_MARKER = ';base64,';
+//         let base64Index = dataURI.indexOf(BASE64_MARKER) + BASE64_MARKER.length;
+//         let base64 = dataURI.substring(base64Index);
+//         let raw = window.atob(base64);
+//         let rawLength = raw.length;
+//         let array = new Uint8Array(new ArrayBuffer(rawLength));
+
+//         for (let i = 0; i < rawLength; i++) {
+//             array[i] = raw.charCodeAt(i);
+//         }
+//         return array;
+//     }
+
+// }
+
+// // 传输加密
+// ApiClient._client.flows.preSendBufferFlow.push(v => {
+//     v.buf = PickSomeFlower.makeFlower(v.buf);
+//     return v;
+// })
+// ApiClient._client.flows.preRecvBufferFlow.push(v => {
+//     v.buf = PickSomeFlower.makeFlower(v.buf);
+//     return v;
+// });
+
+// (window as any).ApiClient = ApiClient;
