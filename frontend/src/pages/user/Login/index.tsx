@@ -1,18 +1,18 @@
+import Footer from '@/components/Footer';
+import { useApiClient } from '@/models/apiClient/useApiClient';
+import { getFakeCaptcha } from '@/services/ant-design-pro/login';
 import {
   AlipayCircleOutlined,
   LockOutlined,
   MobileOutlined,
   TaobaoCircleOutlined,
   UserOutlined,
-  WeiboCircleOutlined,
+  WeiboCircleOutlined
 } from '@ant-design/icons';
-import { Alert, Space, message, Tabs } from 'antd';
-import React, { useState } from 'react';
 import ProForm, { ProFormCaptcha, ProFormCheckbox, ProFormText } from '@ant-design/pro-form';
-import { Link, history, useModel } from 'umi';
-import Footer from '@/components/Footer';
-import { login } from '@/services/ant-design-pro/api';
-import { getFakeCaptcha } from '@/services/ant-design-pro/login';
+import { Alert, message, Space, Tabs } from 'antd';
+import React, { useState } from 'react';
+import { history, Link, useModel } from 'umi';
 import styles from './index.less';
 
 const LoginMessage: React.FC<{
@@ -30,9 +30,10 @@ const LoginMessage: React.FC<{
 
 const Login: React.FC = () => {
   const [submitting, setSubmitting] = useState(false);
-  const [userLoginState, setUserLoginState] = useState<API.LoginResult>({});
+  const [errMsg, setErrMsg] = useState<string>();
   const [type, setType] = useState<string>('account');
   const { initialState, setInitialState } = useModel('@@initialState');
+  const client = useApiClient();
 
   const fetchUserInfo = async () => {
     const userInfo = await initialState?.fetchUserInfo?.();
@@ -43,37 +44,34 @@ const Login: React.FC = () => {
   };
 
   const handleSubmit = async (values: API.LoginParams) => {
-    setSubmitting(true);
+    setSubmitting(true);  // 登录按钮开始转菊花
+    let ret = await client.callApi('user/Login', {
+      ticket: values
+    });
+    console.log('xx', ret)
 
-    try {
-      // 登录
-      const msg = await login({ ...values, type });
-
-      if (msg.status === 'ok') {
-        const defaultLoginSuccessMessage = '登录成功！';
-        message.success(defaultLoginSuccessMessage);
-        await fetchUserInfo();
-        /** 此方法会跳转到 redirect 参数所在的位置 */
-
-        if (!history) return;
-        const { query } = history.location;
-        const { redirect } = query as {
-          redirect: string;
-        };
-        history.push(redirect || '/');
-        return;
-      } // 如果失败去设置用户错误信息
-
-      setUserLoginState(msg);
-    } catch (error) {
-      const defaultLoginFailureMessage = '登录失败，请重试！';
-      message.error(defaultLoginFailureMessage);
+    // 失败
+    if (!ret.isSucc) {
+      message.error(ret.err.message);
+      setErrMsg(ret.err.message);
+      // 如果是成功的话，永不取消 loading
+      setSubmitting(false);
+      return;
     }
 
-    setSubmitting(false);
+    const defaultLoginSuccessMessage = '登录成功！';
+    message.success(defaultLoginSuccessMessage);
+    await fetchUserInfo();
+    /** 此方法会跳转到 redirect 参数所在的位置 */
+
+    if (!history) return;
+    const { query } = history.location;
+    const { redirect } = query as {
+      redirect: string;
+    };
+    history.push(redirect || '/');
   };
 
-  const { status, type: loginType } = userLoginState;
   return (
     <div className={styles.container}>
       <div className={styles.content}>
@@ -106,7 +104,10 @@ const Login: React.FC = () => {
               },
             }}
             onFinish={async (values) => {
-              await handleSubmit(values as API.LoginParams);
+              await handleSubmit({
+                ...values,
+                type: type
+              } as API.LoginParams);
             }}
           >
             <Tabs activeKey={type} onChange={setType}>
@@ -114,9 +115,8 @@ const Login: React.FC = () => {
               <Tabs.TabPane key="mobile" tab={'手机号登录'} />
             </Tabs>
 
-            {status === 'error' && loginType === 'account' && (
-              <LoginMessage content={'错误的用户名和密码(admin/ant.design)'} />
-            )}
+            {errMsg && <LoginMessage content={errMsg} />}
+
             {type === 'account' && (
               <>
                 <ProFormText
@@ -150,7 +150,6 @@ const Login: React.FC = () => {
               </>
             )}
 
-            {status === 'error' && loginType === 'mobile' && <LoginMessage content="验证码错误" />}
             {type === 'mobile' && (
               <>
                 <ProFormText

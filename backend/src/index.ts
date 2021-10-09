@@ -1,3 +1,4 @@
+import 'k8w-extend-native';
 import * as path from "path";
 import { HttpServer } from "tsrpc";
 import { serviceProto } from "./shared/protocols/serviceProto";

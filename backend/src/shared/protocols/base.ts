@@ -3,7 +3,7 @@ export interface BaseRequest {
 }
 
 export interface BaseResponse {
-    __refreshSso?: string;
+    
 }
 
 export interface BaseConf {
