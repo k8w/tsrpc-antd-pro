@@ -48,7 +48,6 @@ const Login: React.FC = () => {
     let ret = await client.callApi('user/Login', {
       ticket: values
     });
-    console.log('xx', ret)
 
     // 失败
     if (!ret.isSucc) {
@@ -59,11 +58,10 @@ const Login: React.FC = () => {
       return;
     }
 
-    const defaultLoginSuccessMessage = '登录成功！';
-    message.success(defaultLoginSuccessMessage);
+    message.success('登录成功！');
     await fetchUserInfo();
-    /** 此方法会跳转到 redirect 参数所在的位置 */
 
+    /** 此方法会跳转到 redirect 参数所在的位置 */
     if (!history) return;
     const { query } = history.location;
     const { redirect } = query as {
