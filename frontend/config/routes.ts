@@ -48,7 +48,7 @@ export const routes: IConfigFromPlugins['routes'] = [
         routes: [
             {
                 path: 'dashboard',
-                name: 'Dashboard',
+                name: '仪表板',
                 routes: [
                     {
                         name: '分析页',
