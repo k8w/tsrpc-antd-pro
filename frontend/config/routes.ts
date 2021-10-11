@@ -8,7 +8,7 @@ export const routes: IConfigFromPlugins['routes'] = [
         component: './login',
     },
     {
-        path: '/tsrpc',
+        path: '/simple',
         name: 'TSRPC 简单示例',
         icon: 'like',
         routes: [
@@ -23,7 +23,7 @@ export const routes: IConfigFromPlugins['routes'] = [
         ]
     },
     {
-        path: '/mongodb',
+        path: '/with-mongodb',
         name: 'MongoDB 综合示例',
         icon: 'database',
         routes: [
