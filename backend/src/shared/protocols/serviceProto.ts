@@ -1,11 +1,85 @@
 import { ServiceProto } from 'tsrpc-proto';
+import { ReqAggregate, ResAggregate } from './mongo/advanced/PtlAggregate';
+import { ReqJoinQuery, ResJoinQuery } from './mongo/advanced/PtlJoinQuery';
+import { ReqAdd, ResAdd } from './mongo/order/PtlAdd';
+import { ReqDel, ResDel } from './mongo/order/PtlDel';
+import { ReqGet, ResGet } from './mongo/order/PtlGet';
+import { ReqGetList, ResGetList } from './mongo/order/PtlGetList';
+import { ReqUpdate, ResUpdate } from './mongo/order/PtlUpdate';
+import { ReqAdd as ReqAdd_1, ResAdd as ResAdd_1 } from './mongo/seller/PtlAdd';
+import { ReqDel as ReqDel_1, ResDel as ResDel_1 } from './mongo/seller/PtlDel';
+import { ReqGet as ReqGet_1, ResGet as ResGet_1 } from './mongo/seller/PtlGet';
+import { ReqGetList as ReqGetList_1, ResGetList as ResGetList_1 } from './mongo/seller/PtlGetList';
+import { ReqUpdate as ReqUpdate_1, ResUpdate as ResUpdate_1 } from './mongo/seller/PtlUpdate';
+import { ReqNeedLogin, ResNeedLogin } from './simple/PtlNeedLogin';
+import { ReqNoNeedLogin, ResNoNeedLogin } from './simple/PtlNoNeedLogin';
+import { ReqUploadFile, ResUploadFile } from './simple/PtlUploadFile';
 import { ReqGetCurrentUser, ResGetCurrentUser } from './user/PtlGetCurrentUser';
 import { ReqGetUsers, ResGetUsers } from './user/PtlGetUsers';
 import { ReqLogin, ResLogin } from './user/PtlLogin';
-import { ReqLogout, ResLogout } from './user/PtlLogout';
 
 export interface ServiceType {
     api: {
+        "mongo/advanced/Aggregate": {
+            req: ReqAggregate,
+            res: ResAggregate
+        },
+        "mongo/advanced/JoinQuery": {
+            req: ReqJoinQuery,
+            res: ResJoinQuery
+        },
+        "mongo/order/Add": {
+            req: ReqAdd,
+            res: ResAdd
+        },
+        "mongo/order/Del": {
+            req: ReqDel,
+            res: ResDel
+        },
+        "mongo/order/Get": {
+            req: ReqGet,
+            res: ResGet
+        },
+        "mongo/order/GetList": {
+            req: ReqGetList,
+            res: ResGetList
+        },
+        "mongo/order/Update": {
+            req: ReqUpdate,
+            res: ResUpdate
+        },
+        "mongo/seller/Add": {
+            req: ReqAdd_1,
+            res: ResAdd_1
+        },
+        "mongo/seller/Del": {
+            req: ReqDel_1,
+            res: ResDel_1
+        },
+        "mongo/seller/Get": {
+            req: ReqGet_1,
+            res: ResGet_1
+        },
+        "mongo/seller/GetList": {
+            req: ReqGetList_1,
+            res: ResGetList_1
+        },
+        "mongo/seller/Update": {
+            req: ReqUpdate_1,
+            res: ResUpdate_1
+        },
+        "simple/NeedLogin": {
+            req: ReqNeedLogin,
+            res: ResNeedLogin
+        },
+        "simple/NoNeedLogin": {
+            req: ReqNoNeedLogin,
+            res: ResNoNeedLogin
+        },
+        "simple/UploadFile": {
+            req: ReqUploadFile,
+            res: ResUploadFile
+        },
         "user/GetCurrentUser": {
             req: ReqGetCurrentUser,
             res: ResGetCurrentUser
@@ -17,10 +91,6 @@ export interface ServiceType {
         "user/Login": {
             req: ReqLogin,
             res: ResLogin
-        },
-        "user/Logout": {
-            req: ReqLogout,
-            res: ResLogout
         }
     },
     msg: {
@@ -29,8 +99,126 @@ export interface ServiceType {
 }
 
 export const serviceProto: ServiceProto<ServiceType> = {
-    "version": 4,
+    "version": 5,
     "services": [
+        {
+            "id": 7,
+            "name": "mongo/advanced/Aggregate",
+            "type": "api",
+            "conf": {
+                "needLogin": true
+            }
+        },
+        {
+            "id": 8,
+            "name": "mongo/advanced/JoinQuery",
+            "type": "api",
+            "conf": {
+                "needLogin": true
+            }
+        },
+        {
+            "id": 9,
+            "name": "mongo/order/Add",
+            "type": "api",
+            "conf": {
+                "needLogin": true
+            }
+        },
+        {
+            "id": 10,
+            "name": "mongo/order/Del",
+            "type": "api",
+            "conf": {
+                "needLogin": true
+            }
+        },
+        {
+            "id": 11,
+            "name": "mongo/order/Get",
+            "type": "api",
+            "conf": {
+                "needLogin": true
+            }
+        },
+        {
+            "id": 12,
+            "name": "mongo/order/GetList",
+            "type": "api",
+            "conf": {
+                "needLogin": true
+            }
+        },
+        {
+            "id": 13,
+            "name": "mongo/order/Update",
+            "type": "api",
+            "conf": {
+                "needLogin": true
+            }
+        },
+        {
+            "id": 14,
+            "name": "mongo/seller/Add",
+            "type": "api",
+            "conf": {
+                "needLogin": true
+            }
+        },
+        {
+            "id": 15,
+            "name": "mongo/seller/Del",
+            "type": "api",
+            "conf": {
+                "needLogin": true
+            }
+        },
+        {
+            "id": 16,
+            "name": "mongo/seller/Get",
+            "type": "api",
+            "conf": {
+                "needLogin": true
+            }
+        },
+        {
+            "id": 17,
+            "name": "mongo/seller/GetList",
+            "type": "api",
+            "conf": {
+                "needLogin": true
+            }
+        },
+        {
+            "id": 18,
+            "name": "mongo/seller/Update",
+            "type": "api",
+            "conf": {
+                "needLogin": true
+            }
+        },
+        {
+            "id": 19,
+            "name": "simple/NeedLogin",
+            "type": "api",
+            "conf": {
+                "needLogin": true
+            }
+        },
+        {
+            "id": 20,
+            "name": "simple/NoNeedLogin",
+            "type": "api",
+            "conf": {}
+        },
+        {
+            "id": 21,
+            "name": "simple/UploadFile",
+            "type": "api",
+            "conf": {
+                "needLogin": true
+            }
+        },
         {
             "id": 6,
             "name": "user/GetCurrentUser",
@@ -52,16 +240,10 @@ export const serviceProto: ServiceProto<ServiceType> = {
             "name": "user/Login",
             "type": "api",
             "conf": {}
-        },
-        {
-            "id": 5,
-            "name": "user/Logout",
-            "type": "api",
-            "conf": {}
         }
     ],
     "types": {
-        "user/PtlGetCurrentUser/ReqGetCurrentUser": {
+        "mongo/advanced/PtlAggregate/ReqAggregate": {
             "type": "Interface",
             "extends": [
                 {
@@ -86,6 +268,369 @@ export const serviceProto: ServiceProto<ServiceType> = {
                 }
             ]
         },
+        "mongo/advanced/PtlAggregate/ResAggregate": {
+            "type": "Interface",
+            "extends": [
+                {
+                    "id": 0,
+                    "type": {
+                        "type": "Reference",
+                        "target": "base/BaseResponse"
+                    }
+                }
+            ]
+        },
+        "base/BaseResponse": {
+            "type": "Interface"
+        },
+        "mongo/advanced/PtlJoinQuery/ReqJoinQuery": {
+            "type": "Interface",
+            "extends": [
+                {
+                    "id": 0,
+                    "type": {
+                        "type": "Reference",
+                        "target": "base/BaseRequest"
+                    }
+                }
+            ]
+        },
+        "mongo/advanced/PtlJoinQuery/ResJoinQuery": {
+            "type": "Interface",
+            "extends": [
+                {
+                    "id": 0,
+                    "type": {
+                        "type": "Reference",
+                        "target": "base/BaseResponse"
+                    }
+                }
+            ]
+        },
+        "mongo/order/PtlAdd/ReqAdd": {
+            "type": "Interface",
+            "extends": [
+                {
+                    "id": 0,
+                    "type": {
+                        "type": "Reference",
+                        "target": "base/BaseRequest"
+                    }
+                }
+            ]
+        },
+        "mongo/order/PtlAdd/ResAdd": {
+            "type": "Interface",
+            "extends": [
+                {
+                    "id": 0,
+                    "type": {
+                        "type": "Reference",
+                        "target": "base/BaseResponse"
+                    }
+                }
+            ]
+        },
+        "mongo/order/PtlDel/ReqDel": {
+            "type": "Interface",
+            "extends": [
+                {
+                    "id": 0,
+                    "type": {
+                        "type": "Reference",
+                        "target": "base/BaseRequest"
+                    }
+                }
+            ]
+        },
+        "mongo/order/PtlDel/ResDel": {
+            "type": "Interface",
+            "extends": [
+                {
+                    "id": 0,
+                    "type": {
+                        "type": "Reference",
+                        "target": "base/BaseResponse"
+                    }
+                }
+            ]
+        },
+        "mongo/order/PtlGet/ReqGet": {
+            "type": "Interface",
+            "extends": [
+                {
+                    "id": 0,
+                    "type": {
+                        "type": "Reference",
+                        "target": "base/BaseRequest"
+                    }
+                }
+            ]
+        },
+        "mongo/order/PtlGet/ResGet": {
+            "type": "Interface",
+            "extends": [
+                {
+                    "id": 0,
+                    "type": {
+                        "type": "Reference",
+                        "target": "base/BaseResponse"
+                    }
+                }
+            ]
+        },
+        "mongo/order/PtlGetList/ReqGetList": {
+            "type": "Interface",
+            "extends": [
+                {
+                    "id": 0,
+                    "type": {
+                        "type": "Reference",
+                        "target": "base/BaseRequest"
+                    }
+                }
+            ]
+        },
+        "mongo/order/PtlGetList/ResGetList": {
+            "type": "Interface",
+            "extends": [
+                {
+                    "id": 0,
+                    "type": {
+                        "type": "Reference",
+                        "target": "base/BaseResponse"
+                    }
+                }
+            ]
+        },
+        "mongo/order/PtlUpdate/ReqUpdate": {
+            "type": "Interface",
+            "extends": [
+                {
+                    "id": 0,
+                    "type": {
+                        "type": "Reference",
+                        "target": "base/BaseRequest"
+                    }
+                }
+            ]
+        },
+        "mongo/order/PtlUpdate/ResUpdate": {
+            "type": "Interface",
+            "extends": [
+                {
+                    "id": 0,
+                    "type": {
+                        "type": "Reference",
+                        "target": "base/BaseResponse"
+                    }
+                }
+            ]
+        },
+        "mongo/seller/PtlAdd/ReqAdd": {
+            "type": "Interface",
+            "extends": [
+                {
+                    "id": 0,
+                    "type": {
+                        "type": "Reference",
+                        "target": "base/BaseRequest"
+                    }
+                }
+            ]
+        },
+        "mongo/seller/PtlAdd/ResAdd": {
+            "type": "Interface",
+            "extends": [
+                {
+                    "id": 0,
+                    "type": {
+                        "type": "Reference",
+                        "target": "base/BaseResponse"
+                    }
+                }
+            ]
+        },
+        "mongo/seller/PtlDel/ReqDel": {
+            "type": "Interface",
+            "extends": [
+                {
+                    "id": 0,
+                    "type": {
+                        "type": "Reference",
+                        "target": "base/BaseRequest"
+                    }
+                }
+            ]
+        },
+        "mongo/seller/PtlDel/ResDel": {
+            "type": "Interface",
+            "extends": [
+                {
+                    "id": 0,
+                    "type": {
+                        "type": "Reference",
+                        "target": "base/BaseResponse"
+                    }
+                }
+            ]
+        },
+        "mongo/seller/PtlGet/ReqGet": {
+            "type": "Interface",
+            "extends": [
+                {
+                    "id": 0,
+                    "type": {
+                        "type": "Reference",
+                        "target": "base/BaseRequest"
+                    }
+                }
+            ]
+        },
+        "mongo/seller/PtlGet/ResGet": {
+            "type": "Interface",
+            "extends": [
+                {
+                    "id": 0,
+                    "type": {
+                        "type": "Reference",
+                        "target": "base/BaseResponse"
+                    }
+                }
+            ]
+        },
+        "mongo/seller/PtlGetList/ReqGetList": {
+            "type": "Interface",
+            "extends": [
+                {
+                    "id": 0,
+                    "type": {
+                        "type": "Reference",
+                        "target": "base/BaseRequest"
+                    }
+                }
+            ]
+        },
+        "mongo/seller/PtlGetList/ResGetList": {
+            "type": "Interface",
+            "extends": [
+                {
+                    "id": 0,
+                    "type": {
+                        "type": "Reference",
+                        "target": "base/BaseResponse"
+                    }
+                }
+            ]
+        },
+        "mongo/seller/PtlUpdate/ReqUpdate": {
+            "type": "Interface",
+            "extends": [
+                {
+                    "id": 0,
+                    "type": {
+                        "type": "Reference",
+                        "target": "base/BaseRequest"
+                    }
+                }
+            ]
+        },
+        "mongo/seller/PtlUpdate/ResUpdate": {
+            "type": "Interface",
+            "extends": [
+                {
+                    "id": 0,
+                    "type": {
+                        "type": "Reference",
+                        "target": "base/BaseResponse"
+                    }
+                }
+            ]
+        },
+        "simple/PtlNeedLogin/ReqNeedLogin": {
+            "type": "Interface",
+            "extends": [
+                {
+                    "id": 0,
+                    "type": {
+                        "type": "Reference",
+                        "target": "base/BaseRequest"
+                    }
+                }
+            ]
+        },
+        "simple/PtlNeedLogin/ResNeedLogin": {
+            "type": "Interface",
+            "extends": [
+                {
+                    "id": 0,
+                    "type": {
+                        "type": "Reference",
+                        "target": "base/BaseResponse"
+                    }
+                }
+            ]
+        },
+        "simple/PtlNoNeedLogin/ReqNoNeedLogin": {
+            "type": "Interface",
+            "extends": [
+                {
+                    "id": 0,
+                    "type": {
+                        "type": "Reference",
+                        "target": "base/BaseRequest"
+                    }
+                }
+            ]
+        },
+        "simple/PtlNoNeedLogin/ResNoNeedLogin": {
+            "type": "Interface",
+            "extends": [
+                {
+                    "id": 0,
+                    "type": {
+                        "type": "Reference",
+                        "target": "base/BaseResponse"
+                    }
+                }
+            ]
+        },
+        "simple/PtlUploadFile/ReqUploadFile": {
+            "type": "Interface",
+            "extends": [
+                {
+                    "id": 0,
+                    "type": {
+                        "type": "Reference",
+                        "target": "base/BaseRequest"
+                    }
+                }
+            ]
+        },
+        "simple/PtlUploadFile/ResUploadFile": {
+            "type": "Interface",
+            "extends": [
+                {
+                    "id": 0,
+                    "type": {
+                        "type": "Reference",
+                        "target": "base/BaseResponse"
+                    }
+                }
+            ]
+        },
+        "user/PtlGetCurrentUser/ReqGetCurrentUser": {
+            "type": "Interface",
+            "extends": [
+                {
+                    "id": 0,
+                    "type": {
+                        "type": "Reference",
+                        "target": "base/BaseRequest"
+                    }
+                }
+            ]
+        },
         "user/PtlGetCurrentUser/ResGetCurrentUser": {
             "type": "Interface",
             "extends": [
@@ -107,9 +652,6 @@ export const serviceProto: ServiceProto<ServiceType> = {
                     }
                 }
             ]
-        },
-        "base/BaseResponse": {
-            "type": "Interface"
         },
         "../data/CurrentUser/CurrentUser": {
             "type": "Interface",
@@ -483,30 +1025,6 @@ export const serviceProto: ServiceProto<ServiceType> = {
                     "name": "sso",
                     "type": {
                         "type": "String"
-                    }
-                }
-            ]
-        },
-        "user/PtlLogout/ReqLogout": {
-            "type": "Interface",
-            "extends": [
-                {
-                    "id": 0,
-                    "type": {
-                        "type": "Reference",
-                        "target": "base/BaseRequest"
-                    }
-                }
-            ]
-        },
-        "user/PtlLogout/ResLogout": {
-            "type": "Interface",
-            "extends": [
-                {
-                    "id": 0,
-                    "type": {
-                        "type": "Reference",
-                        "target": "base/BaseResponse"
                     }
                 }
             ]

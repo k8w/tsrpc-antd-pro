@@ -23,7 +23,7 @@ export const routes: IConfigFromPlugins['routes'] = [
         ]
     },
     {
-        path: '/with-mongodb',
+        path: '/mongo',
         name: 'MongoDB 综合示例',
         icon: 'database',
         routes: [
