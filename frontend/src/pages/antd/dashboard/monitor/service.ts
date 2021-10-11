@@ -1,5 +1,5 @@
 import { request } from 'umi';
-import type { TagType } from './data';
+import type { TagType } from './data.d.ts';
 
 export async function queryTags(): Promise<{ data: { list: TagType[] } }> {
   return request('/api/tags');

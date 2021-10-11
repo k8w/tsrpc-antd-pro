@@ -1,15 +1,15 @@
-import { PlusOutlined, HomeOutlined, ContactsOutlined, ClusterOutlined } from '@ant-design/icons';
-import { Avatar, Card, Col, Divider, Input, Row, Tag } from 'antd';
-import React, { useState, useRef } from 'react';
+import { ClusterOutlined, ContactsOutlined, HomeOutlined, PlusOutlined } from '@ant-design/icons';
 import { GridContent } from '@ant-design/pro-layout';
-import { Link, useRequest } from 'umi';
+import { Avatar, Card, Col, Divider, Input, Row, Tag } from 'antd';
+import React, { useRef, useState } from 'react';
 import type { RouteChildrenProps } from 'react-router';
-import Projects from './components/Projects';
-import Articles from './components/Articles';
-import Applications from './components/Applications';
-import type { CurrentUser, TagType, tabKeyType } from './data.d';
-import { queryCurrent } from './service';
+import { Link, useRequest } from 'umi';
 import styles from './Center.less';
+import Applications from './components/Applications';
+import Articles from './components/Articles';
+import Projects from './components/Projects';
+import type { CurrentUser, tabKeyType, TagType } from './data';
+import { queryCurrent } from './service';
 
 const operationTabList = [
   {

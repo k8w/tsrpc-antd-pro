@@ -1,284 +1,237 @@
-export default [
+import { IConfigFromPlugins } from "@/.umi/core/pluginConfig";
+
+export const routes: IConfigFromPlugins['routes'] = [
+    // 登录页（无 Layout）
     {
-        path: '/user',
+        path: '/login',
         layout: false,
-        routes: [
-            {
-                path: '/user/login',
-                layout: false,
-                name: 'login',
-                component: './user/Login',
-            },
-            {
-                path: '/user',
-                redirect: '/user/login',
-            },
-            {
-                name: 'register-result',
-                icon: 'smile',
-                path: '/user/register-result',
-                component: './user/register-result',
-            },
-            {
-                name: 'register',
-                icon: 'smile',
-                path: '/user/register',
-                component: './user/register',
-            },
-            {
-                component: '404',
-            },
-        ],
+        component: './login',
     },
     {
-        path: '/dashboard',
-        name: 'dashboard',
-        icon: 'dashboard',
+        path: '/tsrpc',
+        name: 'TSRPC 简单示例',
+        icon: 'like',
         routes: [
             {
-                path: '/dashboard',
-                redirect: '/dashboard/analysis',
+                path: 'callApi',
+                name: '接口调用'
             },
             {
-                name: 'analysis',
-                icon: 'smile',
-                path: '/dashboard/analysis',
-                component: './dashboard/analysis',
+                path: 'upload',
+                name: '文件上传'
             },
-            {
-                name: 'monitor',
-                icon: 'smile',
-                path: '/dashboard/monitor',
-                component: './dashboard/monitor',
-            },
-            {
-                name: 'workplace',
-                icon: 'smile',
-                path: '/dashboard/workplace',
-                component: './dashboard/workplace',
-            },
-        ],
+        ]
     },
     {
-        path: '/form',
-        icon: 'form',
-        name: 'form',
+        path: '/mongodb',
+        name: 'MongoDB 综合示例',
+        icon: 'database',
         routes: [
             {
-                path: '/form',
-                redirect: '/form/basic-form',
+                path: 'crud',
+                name: '增删改查'
             },
             {
-                name: 'basic-form',
-                icon: 'smile',
-                path: '/form/basic-form',
-                component: './form/basic-form',
+                path: 'join',
+                name: '联合查询'
             },
             {
-                name: 'step-form',
-                icon: 'smile',
-                path: '/form/step-form',
-                component: './form/step-form',
-            },
-            {
-                name: 'advanced-form',
-                icon: 'smile',
-                path: '/form/advanced-form',
-                component: './form/advanced-form',
-            },
-        ],
+                path: 'aggregate',
+                name: '聚合统计'
+            }
+        ]
     },
     {
-        path: '/list',
-        icon: 'table',
-        name: 'list',
+        path: '/antd',
+        name: '静态页面模板',
+        icon: 'book',
         routes: [
             {
-                path: '/list/search',
-                name: 'search-list',
-                component: './list/search',
+                path: 'dashboard',
+                name: 'Dashboard',
                 routes: [
                     {
-                        path: '/list/search',
-                        redirect: '/list/search/articles',
+                        name: '分析页',
+                        path: 'analysis',
+                        component: './antd/dashboard/analysis',
                     },
                     {
-                        name: 'articles',
-                        icon: 'smile',
-                        path: '/list/search/articles',
-                        component: './list/search/articles',
+                        name: '监控页',
+                        path: 'monitor',
+                        component: './antd/dashboard/monitor',
                     },
                     {
-                        name: 'projects',
-                        icon: 'smile',
-                        path: '/list/search/projects',
-                        component: './list/search/projects',
-                    },
-                    {
-                        name: 'applications',
-                        icon: 'smile',
-                        path: '/list/search/applications',
-                        component: './list/search/applications',
+                        name: '工作台',
+                        path: 'workplace',
+                        component: './antd/dashboard/workplace',
                     },
                 ],
             },
             {
-                path: '/list',
-                redirect: '/list/table-list',
+                path: 'form',
+                name: '表单页',
+                routes: [
+                    {
+                        name: '基础表单',
+                        path: 'basic-form',
+                        component: './antd/form/basic-form',
+                    },
+                    {
+                        name: '分步表单',
+                        path: 'step-form',
+                        component: './antd/form/step-form',
+                    },
+                    {
+                        name: '高级表单',
+                        path: 'advanced-form',
+                        component: './antd/form/advanced-form',
+                    },
+                ],
             },
             {
-                name: 'table-list',
-                icon: 'smile',
-                path: '/list/table-list',
-                component: './list/table-list',
+                path: 'list',
+                icon: 'table',
+                name: '列表页',
+                routes: [
+                    {
+                        path: 'search',
+                        name: '搜索列表',
+                        component: './antd/list/search',
+                        routes: [
+                            {
+                                name: '搜索列表（文章）',
+                                path: 'articles',
+                                component: './antd/list/search/articles',
+                            },
+                            {
+                                name: '搜索列表（项目）',
+                                path: 'projects',
+                                component: './antd/list/search/projects',
+                            },
+                            {
+                                name: '搜索列表（应用）',
+                                path: 'applications',
+                                component: './antd/list/search/applications',
+                            },
+                        ],
+                    },
+                    {
+                        name: '查询表格',
+                        path: 'table-list',
+                        component: './antd/list/table-list',
+                    },
+                    {
+                        name: '标准列表',
+                        path: 'basic-list',
+                        component: './antd/list/basic-list',
+                    },
+                    {
+                        name: '卡片列表',
+                        path: 'card-list',
+                        component: './antd/list/card-list',
+                    },
+                ],
             },
             {
-                name: 'basic-list',
-                icon: 'smile',
-                path: '/list/basic-list',
-                component: './list/basic-list',
+                path: 'profile',
+                name: '详情页',
+                icon: 'profile',
+                routes: [
+                    {
+                        name: '基础详情页',
+                        path: 'basic',
+                        component: './antd/profile/basic',
+                    },
+                    {
+                        name: '高级详情页',
+                        path: 'advanced',
+                        component: './antd/profile/advanced',
+                    },
+                ],
             },
             {
-                name: 'card-list',
-                icon: 'smile',
-                path: '/list/card-list',
-                component: './list/card-list',
+                name: '结果页',
+                icon: 'CheckCircleOutlined',
+                path: 'result',
+                routes: [
+                    {
+                        name: '成功页',
+                        path: 'success',
+                        component: './antd/result/success',
+                    },
+                    {
+                        name: '失败页',
+                        path: 'fail',
+                        component: './antd/result/fail',
+                    },
+                ],
             },
-        ],
+            {
+                name: '异常页',
+                icon: 'warning',
+                path: 'exception',
+                routes: [
+                    {
+                        name: '403',
+                        path: '403',
+                        component: './antd/exception/403',
+                    },
+                    {
+                        name: '404',
+                        path: '404',
+                        component: './antd/exception/404',
+                    },
+                    {
+                        name: '500',
+                        path: '500',
+                        component: './antd/exception/500',
+                    },
+                ],
+            },
+            {
+                name: '个人页',
+                icon: 'user',
+                path: 'account',
+                access: 'canAdmin',
+                routes: [
+                    {
+                        name: '个人中心',
+                        path: 'center',
+                        component: './antd/account/center',
+                    },
+                    {
+                        name: '个人设置',
+                        path: 'settings',
+                        component: './antd/account/settings',
+                    },
+                ],
+            },
+            {
+                name: '图形编辑器',
+                icon: 'highlight',
+                path: 'editor',
+                routes: [
+                    {
+                        name: '流程编辑器',
+                        path: 'flow',
+                        component: './antd/editor/flow',
+                    },
+                    {
+                        name: '脑图编辑器',
+                        path: 'mind',
+                        component: './antd/editor/mind',
+                    },
+                    {
+                        name: '拓扑编辑器',
+                        path: 'koni',
+                        component: './antd/editor/koni',
+                    },
+                ],
+            },
+        ]
     },
-    {
-        path: '/profile',
-        name: 'profile',
-        icon: 'profile',
-        routes: [
-            {
-                path: '/profile',
-                redirect: '/profile/basic',
-            },
-            {
-                name: 'basic',
-                icon: 'smile',
-                path: '/profile/basic',
-                component: './profile/basic',
-            },
-            {
-                name: 'advanced',
-                icon: 'smile',
-                path: '/profile/advanced',
-                component: './profile/advanced',
-            },
-        ],
-    },
-    {
-        name: 'result',
-        icon: 'CheckCircleOutlined',
-        path: '/result',
-        routes: [
-            {
-                path: '/result',
-                redirect: '/result/success',
-            },
-            {
-                name: 'success',
-                icon: 'smile',
-                path: '/result/success',
-                component: './result/success',
-            },
-            {
-                name: 'fail',
-                icon: 'smile',
-                path: '/result/fail',
-                component: './result/fail',
-            },
-        ],
-    },
-    {
-        name: 'exception',
-        icon: 'warning',
-        path: '/exception',
-        routes: [
-            {
-                path: '/exception',
-                redirect: '/exception/403',
-            },
-            {
-                name: '403',
-                icon: 'smile',
-                path: '/exception/403',
-                component: './exception/403',
-            },
-            {
-                name: '404',
-                icon: 'smile',
-                path: '/exception/404',
-                component: './exception/404',
-            },
-            {
-                name: '500',
-                icon: 'smile',
-                path: '/exception/500',
-                component: './exception/500',
-            },
-        ],
-    },
-    {
-        name: 'account',
-        icon: 'user',
-        path: '/account',
-        access: 'canAdmin',
-        routes: [
-            {
-                path: '/account',
-                redirect: '/account/center',
-            },
-            {
-                name: 'center',
-                icon: 'smile',
-                path: '/account/center',
-                component: './account/center',
-            },
-            {
-                name: 'settings',
-                icon: 'smile',
-                path: '/account/settings',
-                component: './account/settings',
-            },
-        ],
-    },
-    {
-        name: 'editor',
-        icon: 'highlight',
-        path: '/editor',
-        routes: [
-            {
-                path: '/editor',
-                redirect: '/editor/flow',
-            },
-            {
-                name: 'flow',
-                icon: 'smile',
-                path: '/editor/flow',
-                component: './editor/flow',
-            },
-            {
-                name: 'mind',
-                icon: 'smile',
-                path: '/editor/mind',
-                component: './editor/mind',
-            },
-            {
-                name: 'koni',
-                icon: 'smile',
-                path: '/editor/koni',
-                component: './editor/koni',
-            },
-        ],
-    },
-    {
-        path: '/',
-        redirect: '/dashboard/analysis',
-    },
+    // 默认 404 页面
     {
         component: '404',
     },
-]
+];
