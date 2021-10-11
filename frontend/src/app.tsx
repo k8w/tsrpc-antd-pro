@@ -3,6 +3,7 @@ import RightContent from '@/components/RightContent';
 import { BookOutlined, LinkOutlined } from '@ant-design/icons';
 import type { Settings as LayoutSettings } from '@ant-design/pro-layout';
 import { PageLoading } from '@ant-design/pro-layout';
+import 'k8w-extend-native';
 import type { RunTimeLayoutConfig } from 'umi';
 import { history, Link } from 'umi';
 import { apiClient } from './models/apiClient/apiClient';
