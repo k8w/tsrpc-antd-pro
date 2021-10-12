@@ -11,8 +11,8 @@ import { ReqDel as ReqDel_1, ResDel as ResDel_1 } from './mongo/seller/PtlDel';
 import { ReqGet as ReqGet_1, ResGet as ResGet_1 } from './mongo/seller/PtlGet';
 import { ReqGetList as ReqGetList_1, ResGetList as ResGetList_1 } from './mongo/seller/PtlGetList';
 import { ReqUpdate as ReqUpdate_1, ResUpdate as ResUpdate_1 } from './mongo/seller/PtlUpdate';
-import { ReqNeedLogin, ResNeedLogin } from './simple/PtlNeedLogin';
-import { ReqNoNeedLogin, ResNoNeedLogin } from './simple/PtlNoNeedLogin';
+import { ReqAddData, ResAddData } from './simple/PtlAddData';
+import { ReqGetData, ResGetData } from './simple/PtlGetData';
 import { ReqUploadFile, ResUploadFile } from './simple/PtlUploadFile';
 import { ReqGetCurrentUser, ResGetCurrentUser } from './user/PtlGetCurrentUser';
 import { ReqGetUsers, ResGetUsers } from './user/PtlGetUsers';
@@ -68,13 +68,13 @@ export interface ServiceType {
             req: ReqUpdate_1,
             res: ResUpdate_1
         },
-        "simple/NeedLogin": {
-            req: ReqNeedLogin,
-            res: ResNeedLogin
+        "simple/AddData": {
+            req: ReqAddData,
+            res: ResAddData
         },
-        "simple/NoNeedLogin": {
-            req: ReqNoNeedLogin,
-            res: ResNoNeedLogin
+        "simple/GetData": {
+            req: ReqGetData,
+            res: ResGetData
         },
         "simple/UploadFile": {
             req: ReqUploadFile,
@@ -99,7 +99,7 @@ export interface ServiceType {
 }
 
 export const serviceProto: ServiceProto<ServiceType> = {
-    "version": 5,
+    "version": 6,
     "services": [
         {
             "id": 7,
@@ -198,18 +198,14 @@ export const serviceProto: ServiceProto<ServiceType> = {
             }
         },
         {
-            "id": 19,
-            "name": "simple/NeedLogin",
-            "type": "api",
-            "conf": {
-                "needLogin": true
-            }
+            "id": 22,
+            "name": "simple/AddData",
+            "type": "api"
         },
         {
-            "id": 20,
-            "name": "simple/NoNeedLogin",
-            "type": "api",
-            "conf": {}
+            "id": 23,
+            "name": "simple/GetData",
+            "type": "api"
         },
         {
             "id": 21,
@@ -547,50 +543,74 @@ export const serviceProto: ServiceProto<ServiceType> = {
                 }
             ]
         },
-        "simple/PtlNeedLogin/ReqNeedLogin": {
+        "simple/PtlAddData/ReqAddData": {
             "type": "Interface",
-            "extends": [
+            "properties": [
                 {
                     "id": 0,
+                    "name": "content",
                     "type": {
-                        "type": "Reference",
-                        "target": "base/BaseRequest"
+                        "type": "String"
                     }
                 }
             ]
         },
-        "simple/PtlNeedLogin/ResNeedLogin": {
+        "simple/PtlAddData/ResAddData": {
             "type": "Interface",
-            "extends": [
+            "properties": [
                 {
                     "id": 0,
+                    "name": "id",
                     "type": {
-                        "type": "Reference",
-                        "target": "base/BaseResponse"
+                        "type": "Number"
+                    }
+                },
+                {
+                    "id": 1,
+                    "name": "time",
+                    "type": {
+                        "type": "Date"
                     }
                 }
             ]
         },
-        "simple/PtlNoNeedLogin/ReqNoNeedLogin": {
-            "type": "Interface",
-            "extends": [
-                {
-                    "id": 0,
-                    "type": {
-                        "type": "Reference",
-                        "target": "base/BaseRequest"
-                    }
-                }
-            ]
+        "simple/PtlGetData/ReqGetData": {
+            "type": "Interface"
         },
-        "simple/PtlNoNeedLogin/ResNoNeedLogin": {
+        "simple/PtlGetData/ResGetData": {
             "type": "Interface",
-            "extends": [
+            "properties": [
                 {
                     "id": 0,
+                    "name": "data",
                     "type": {
-                        "type": "Reference",
-                        "target": "base/BaseResponse"
+                        "type": "Array",
+                        "elementType": {
+                            "type": "Interface",
+                            "properties": [
+                                {
+                                    "id": 0,
+                                    "name": "id",
+                                    "type": {
+                                        "type": "Number"
+                                    }
+                                },
+                                {
+                                    "id": 1,
+                                    "name": "content",
+                                    "type": {
+                                        "type": "String"
+                                    }
+                                },
+                                {
+                                    "id": 2,
+                                    "name": "time",
+                                    "type": {
+                                        "type": "Date"
+                                    }
+                                }
+                            ]
+                        }
                     }
                 }
             ]
@@ -605,6 +625,23 @@ export const serviceProto: ServiceProto<ServiceType> = {
                         "target": "base/BaseRequest"
                     }
                 }
+            ],
+            "properties": [
+                {
+                    "id": 0,
+                    "name": "fileName",
+                    "type": {
+                        "type": "String"
+                    }
+                },
+                {
+                    "id": 1,
+                    "name": "fileData",
+                    "type": {
+                        "type": "Buffer",
+                        "arrayType": "Uint8Array"
+                    }
+                }
             ]
         },
         "simple/PtlUploadFile/ResUploadFile": {
@@ -615,6 +652,15 @@ export const serviceProto: ServiceProto<ServiceType> = {
                     "type": {
                         "type": "Reference",
                         "target": "base/BaseResponse"
+                    }
+                }
+            ],
+            "properties": [
+                {
+                    "id": 0,
+                    "name": "url",
+                    "type": {
+                        "type": "String"
                     }
                 }
             ]

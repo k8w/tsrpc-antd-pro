@@ -1,12 +1,11 @@
 import Footer from '@/components/Footer';
 import RightContent from '@/components/RightContent';
-import { BookOutlined, LinkOutlined } from '@ant-design/icons';
 import type { Settings as LayoutSettings } from '@ant-design/pro-layout';
 import { PageLoading } from '@ant-design/pro-layout';
 import 'k8w-extend-native';
 import type { RunTimeLayoutConfig } from 'umi';
-import { history, Link } from 'umi';
-import { apiClient } from './models/apiClient/apiClient';
+import { history } from 'umi';
+import { apiClient } from './utils/apiClient/apiClient';
 import { CurrentUser } from './shared/data/CurrentUser';
 
 const isDev = process.env.NODE_ENV === 'development';
@@ -55,9 +54,10 @@ export const layout: RunTimeLayoutConfig = ({ initialState }) => {
   return {
     rightContentRender: () => <RightContent />,
     disableContentMargin: false,
-    waterMarkProps: {
-      content: initialState?.currentUser?.name,
-    },
+    // 水印设置
+    // waterMarkProps: {
+    //   content: initialState?.currentUser?.name,
+    // },
     footerRender: () => <Footer />,
     onPageChange: () => {
       const { location } = history;
@@ -66,18 +66,6 @@ export const layout: RunTimeLayoutConfig = ({ initialState }) => {
         history.push(loginPath);
       }
     },
-    links: isDev
-      ? [
-        <Link to="/umi/plugin/openapi" target="_blank">
-          <LinkOutlined />
-          <span>OpenAPI 文档</span>
-        </Link>,
-        <Link to="/~docs">
-          <BookOutlined />
-          <span>业务组件文档</span>
-        </Link>,
-      ]
-      : [],
     menuHeaderRender: undefined,
     // 自定义 403 页面
     // unAccessible: <div>unAccessible</div>,

@@ -1,5 +1,5 @@
+import { Button, Result } from 'antd';
 import { Link } from 'umi';
-import { Result, Button } from 'antd';
 
 export default () => (
   <Result
@@ -8,7 +8,7 @@ export default () => (
     style={{
       background: 'none',
     }}
-    subTitle="Sorry, the page you visited does not exist."
+    subTitle="出错啦，你要访问的页面不存在哦~"
     extra={
       <Link to="/">
         <Button type="primary">Back Home</Button>

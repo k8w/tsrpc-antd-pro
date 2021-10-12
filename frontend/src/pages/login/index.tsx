@@ -1,6 +1,7 @@
 import Footer from '@/components/Footer';
-import { useApiClient } from '@/models/apiClient/useApiClient';
 import { getFakeCaptcha } from '@/services/ant-design-pro/login';
+import { apiClient } from '@/utils/apiClient/apiClient';
+import { useScopedClient } from '@/utils/tsrpc-react/useScopedClient';
 import {
   AlipayCircleOutlined,
   LockOutlined,
@@ -33,7 +34,7 @@ const Login: React.FC = () => {
   const [errMsg, setErrMsg] = useState<string>();
   const [type, setType] = useState<string>('account');
   const { initialState, setInitialState } = useModel('@@initialState');
-  const client = useApiClient();
+  const client = useScopedClient(apiClient);
 
   const fetchUserInfo = async () => {
     const userInfo = await initialState?.fetchUserInfo?.();

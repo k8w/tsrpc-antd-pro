@@ -1,5 +1,5 @@
+import { Button, Result } from 'antd';
 import { Link } from 'umi';
-import { Result, Button } from 'antd';
 
 export default () => (
   <Result
@@ -8,7 +8,7 @@ export default () => (
     style={{
       background: 'none',
     }}
-    subTitle="Sorry, the server is reporting an error."
+    subTitle="系统繁忙，请稍后再试。"
     extra={
       <Link to="/">
         <Button type="primary">Back Home</Button>

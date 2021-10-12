@@ -1,5 +1,5 @@
+import { Button, Result } from 'antd';
 import { Link } from 'umi';
-import { Result, Button } from 'antd';
 
 export default () => (
   <Result
@@ -8,7 +8,7 @@ export default () => (
     style={{
       background: 'none',
     }}
-    subTitle="Sorry, you don't have access to this page."
+    subTitle="抱歉，你没有权限访问此页面。"
     extra={
       <Link to="/">
         <Button type="primary">Back to home</Button>

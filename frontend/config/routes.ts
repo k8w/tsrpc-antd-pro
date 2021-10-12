@@ -8,17 +8,24 @@ export const routes: IConfigFromPlugins['routes'] = [
         component: './login',
     },
     {
+        path: '/',
+        exact: true,
+        redirect: '/simple/call-api'
+    },
+    {
         path: '/simple',
         name: 'TSRPC 简单示例',
         icon: 'like',
         routes: [
             {
-                path: 'callApi',
-                name: '接口调用'
+                path: 'call-api',
+                name: '接口调用',
+                component: './simple/call-api'
             },
             {
                 path: 'upload',
-                name: '文件上传'
+                name: '文件上传',
+                component: './simple/upload'
             },
         ]
     },
@@ -29,15 +36,18 @@ export const routes: IConfigFromPlugins['routes'] = [
         routes: [
             {
                 path: 'crud',
-                name: '增删改查'
+                name: '增删改查',
+                component: './mongo/crud'
             },
             {
                 path: 'join',
-                name: '联合查询'
+                name: '联合查询',
+                component: './mongo/join'
             },
             {
                 path: 'aggregate',
-                name: '聚合统计'
+                name: '聚合统计',
+                component: './mongo/aggregate'
             }
         ]
     },
