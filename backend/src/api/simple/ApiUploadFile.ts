@@ -7,6 +7,6 @@ export async function ApiUploadFile(call: ApiCall<ReqUploadFile, ResUploadFile>)
     await fs.writeFile('uploads/' + call.req.fileName, call.req.fileData);
 
     call.succ({
-        url: '/uploads/' + call.req.fileName
+        url: 'http://127.0.0.1:3000/uploads/' + call.req.fileName
     });
 }

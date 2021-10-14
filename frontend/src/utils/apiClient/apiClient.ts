@@ -1,9 +1,12 @@
 import { HttpClient } from "tsrpc-browser";
 import { serviceProto } from "../../shared/protocols/serviceProto";
 
+// Server 地址，建议放到自己统一的配置文件中
+export const apiServer = `${location.protocol}//${location.hostname}:3000`;
+
 // 适用于全站只有 1 个唯一的 Client 的情况
 export const apiClient = new HttpClient(serviceProto, {
-    server: `${location.protocol}//${location.hostname}:3000`,
+    server: apiServer,
     logger: console
 });
 

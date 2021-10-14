@@ -1,6 +1,6 @@
+import fs from "fs/promises";
 import 'k8w-extend-native';
 import * as path from "path";
-import fs from "fs/promises";
 import { HttpConnection, HttpServer } from "tsrpc";
 import { serviceProto } from "./shared/protocols/serviceProto";
 
@@ -36,8 +36,10 @@ async function main() {
     // Auto implement APIs
     await server.autoImplementApi(path.resolve(__dirname, 'api'));
 
-    // TODO
-    // Prepare something... (e.g. connect the db)
+    // Init upload dir
+    if (await fs.access('uploads').catch(() => true)) {
+        await fs.mkdir('uploads');
+    }
 
     await server.start();
 };
