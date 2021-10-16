@@ -1,6 +1,6 @@
 import { ResGetData } from "@/shared/protocols/simple/PtlGetData";
-import { apiClient } from "@/utils/apiClient/apiClient";
-import { useScopedClient } from "@/utils/tsrpc-react/useScopedClient";
+import { apiClient } from "@/models/apiClient/apiClient";
+import { useScopedClient } from "@/models/tsrpc-react/useScopedClient";
 import ProTable from "@ant-design/pro-table";
 import { Alert, Button, Col, Divider, Input, message, Row } from "antd";
 import { useEffect, useState } from "react";

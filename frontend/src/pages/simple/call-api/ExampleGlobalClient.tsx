@@ -1,5 +1,5 @@
 import { ResGetData } from "@/shared/protocols/simple/PtlGetData";
-import { apiClient } from "@/utils/apiClient/apiClient";
+import { apiClient } from "@/models/apiClient/apiClient";
 import ProTable from "@ant-design/pro-table";
 import { Alert, Button, Col, Divider, Input, message, Row } from "antd";
 import { useEffect, useState } from "react";

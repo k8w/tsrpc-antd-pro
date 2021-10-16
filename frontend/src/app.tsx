@@ -6,7 +6,7 @@ import 'k8w-extend-native';
 import type { RunTimeLayoutConfig } from 'umi';
 import { history } from 'umi';
 import { CurrentUser } from './shared/data/CurrentUser';
-import { apiClient } from './utils/apiClient/apiClient';
+import { apiClient } from './models/apiClient/apiClient';
 
 const loginPath = '/login';
 

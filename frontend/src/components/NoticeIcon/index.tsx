@@ -1,7 +1,7 @@
 import { useModel } from 'umi';
 import { ResGetNotice } from '@/shared/protocols/antd/PtlGetNotice';
-import { apiClient } from '@/utils/apiClient/apiClient';
-import { useCallApi } from '@/utils/tsrpc-react/useCallApi';
+import { apiClient } from '@/models/apiClient/apiClient';
+import { useCallApi } from '@/models/tsrpc-react/useCallApi';
 import { message, Tag } from 'antd';
 import { groupBy } from 'lodash';
 import moment from 'moment';

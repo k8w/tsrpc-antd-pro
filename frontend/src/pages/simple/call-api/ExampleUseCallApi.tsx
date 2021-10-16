@@ -1,6 +1,6 @@
 import { ResGetData } from "@/shared/protocols/simple/PtlGetData";
-import { apiClient } from "@/utils/apiClient/apiClient";
-import { useCallApi } from "@/utils/tsrpc-react/useCallApi";
+import { apiClient } from "@/models/apiClient/apiClient";
+import { useCallApi } from "@/models/tsrpc-react/useCallApi";
 import ProTable from "@ant-design/pro-table";
 import { Alert, Button, Col, Divider, Input, message, Row } from "antd";
 import { useState } from "react";

@@ -1,6 +1,7 @@
 import Footer from '@/components/Footer';
-import { apiClient } from '@/utils/apiClient/apiClient';
-import { useScopedClient } from '@/utils/tsrpc-react/useScopedClient';
+import { LoginTicket } from '@/shared/protocols/user/PtlLogin';
+import { apiClient } from '@/models/apiClient/apiClient';
+import { useScopedClient } from '@/models/tsrpc-react/useScopedClient';
 import {
   AlipayCircleOutlined,
   LockOutlined,
@@ -43,7 +44,7 @@ const Login: React.FC = () => {
     }
   };
 
-  const handleSubmit = async (values: API.LoginParams) => {
+  const handleSubmit = async (values: LoginParams) => {
     setSubmitting(true);  // 登录按钮开始转菊花
     let ret = await client.callApi('user/Login', {
       ticket: values
@@ -105,7 +106,7 @@ const Login: React.FC = () => {
               await handleSubmit({
                 ...values,
                 type: type
-              } as API.LoginParams);
+              } as LoginParams);
             }}
           >
             <Tabs activeKey={type} onChange={setType}>
@@ -230,3 +231,5 @@ const Login: React.FC = () => {
 };
 
 export default Login;
+
+type LoginParams = LoginTicket & { autoLogin: boolean };

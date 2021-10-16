@@ -1,6 +1,6 @@
 import { ResUploadFile } from "@/shared/protocols/simple/PtlUploadFile";
-import { apiClient } from "@/utils/apiClient/apiClient";
-import { useScopedClient } from "@/utils/tsrpc-react/useScopedClient";
+import { apiClient } from "@/models/apiClient/apiClient";
+import { useScopedClient } from "@/models/tsrpc-react/useScopedClient";
 import { UploadOutlined } from "@ant-design/icons";
 import { Button, Upload } from "antd";
 import { UploadFile } from "antd/lib/upload/interface";
