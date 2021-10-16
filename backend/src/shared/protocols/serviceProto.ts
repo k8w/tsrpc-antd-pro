@@ -1,4 +1,5 @@
 import { ServiceProto } from 'tsrpc-proto';
+import { ReqGetNotice, ResGetNotice } from './antd/PtlGetNotice';
 import { ReqAggregate, ResAggregate } from './mongo/advanced/PtlAggregate';
 import { ReqJoinQuery, ResJoinQuery } from './mongo/advanced/PtlJoinQuery';
 import { ReqAdd, ResAdd } from './mongo/order/PtlAdd';
@@ -20,6 +21,10 @@ import { ReqLogin, ResLogin } from './user/PtlLogin';
 
 export interface ServiceType {
     api: {
+        "antd/GetNotice": {
+            req: ReqGetNotice,
+            res: ResGetNotice
+        },
         "mongo/advanced/Aggregate": {
             req: ReqAggregate,
             res: ResAggregate
@@ -99,8 +104,13 @@ export interface ServiceType {
 }
 
 export const serviceProto: ServiceProto<ServiceType> = {
-    "version": 6,
+    "version": 7,
     "services": [
+        {
+            "id": 24,
+            "name": "antd/GetNotice",
+            "type": "api"
+        },
         {
             "id": 7,
             "name": "mongo/advanced/Aggregate",
@@ -239,6 +249,137 @@ export const serviceProto: ServiceProto<ServiceType> = {
         }
     ],
     "types": {
+        "antd/PtlGetNotice/ReqGetNotice": {
+            "type": "Interface"
+        },
+        "antd/PtlGetNotice/ResGetNotice": {
+            "type": "Interface",
+            "properties": [
+                {
+                    "id": 0,
+                    "name": "data",
+                    "type": {
+                        "type": "Array",
+                        "elementType": {
+                            "type": "Reference",
+                            "target": "antd/PtlGetNotice/NoticeIconItem"
+                        }
+                    }
+                }
+            ]
+        },
+        "antd/PtlGetNotice/NoticeIconItem": {
+            "type": "Interface",
+            "properties": [
+                {
+                    "id": 0,
+                    "name": "id",
+                    "type": {
+                        "type": "String"
+                    },
+                    "optional": true
+                },
+                {
+                    "id": 1,
+                    "name": "extra",
+                    "type": {
+                        "type": "String"
+                    },
+                    "optional": true
+                },
+                {
+                    "id": 2,
+                    "name": "key",
+                    "type": {
+                        "type": "String"
+                    },
+                    "optional": true
+                },
+                {
+                    "id": 3,
+                    "name": "read",
+                    "type": {
+                        "type": "Boolean"
+                    },
+                    "optional": true
+                },
+                {
+                    "id": 4,
+                    "name": "avatar",
+                    "type": {
+                        "type": "String"
+                    },
+                    "optional": true
+                },
+                {
+                    "id": 5,
+                    "name": "title",
+                    "type": {
+                        "type": "String"
+                    },
+                    "optional": true
+                },
+                {
+                    "id": 6,
+                    "name": "status",
+                    "type": {
+                        "type": "String"
+                    },
+                    "optional": true
+                },
+                {
+                    "id": 7,
+                    "name": "datetime",
+                    "type": {
+                        "type": "String"
+                    },
+                    "optional": true
+                },
+                {
+                    "id": 8,
+                    "name": "description",
+                    "type": {
+                        "type": "String"
+                    },
+                    "optional": true
+                },
+                {
+                    "id": 9,
+                    "name": "type",
+                    "type": {
+                        "type": "Reference",
+                        "target": "antd/PtlGetNotice/NoticeIconItemType"
+                    },
+                    "optional": true
+                }
+            ]
+        },
+        "antd/PtlGetNotice/NoticeIconItemType": {
+            "type": "Union",
+            "members": [
+                {
+                    "id": 0,
+                    "type": {
+                        "type": "Literal",
+                        "literal": "notification"
+                    }
+                },
+                {
+                    "id": 1,
+                    "type": {
+                        "type": "Literal",
+                        "literal": "message"
+                    }
+                },
+                {
+                    "id": 2,
+                    "type": {
+                        "type": "Literal",
+                        "literal": "event"
+                    }
+                }
+            ]
+        },
         "mongo/advanced/PtlAggregate/ReqAggregate": {
             "type": "Interface",
             "extends": [

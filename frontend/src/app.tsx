@@ -5,10 +5,10 @@ import { PageLoading } from '@ant-design/pro-layout';
 import 'k8w-extend-native';
 import type { RunTimeLayoutConfig } from 'umi';
 import { history } from 'umi';
-import { apiClient } from './utils/apiClient/apiClient';
 import { CurrentUser } from './shared/data/CurrentUser';
+import { apiClient } from './utils/apiClient/apiClient';
 
-const loginPath = '/user/login';
+const loginPath = '/login';
 
 /** 获取用户信息比较慢的时候会展示一个 loading */
 export const initialStateConfig = {

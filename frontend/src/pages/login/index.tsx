@@ -1,5 +1,4 @@
 import Footer from '@/components/Footer';
-import { getFakeCaptcha } from '@/services/ant-design-pro/login';
 import { apiClient } from '@/utils/apiClient/apiClient';
 import { useScopedClient } from '@/utils/tsrpc-react/useScopedClient';
 import {
@@ -193,14 +192,8 @@ const Login: React.FC = () => {
                     },
                   ]}
                   onGetCaptcha={async (phone) => {
-                    const result = await getFakeCaptcha({
-                      phone,
-                    });
-
-                    if (result === false) {
-                      return;
-                    }
-
+                    // TEST
+                    await new Promise(rs => { setTimeout(rs, 1000) })
                     message.success('获取验证码成功！验证码为：1234');
                   }}
                 />

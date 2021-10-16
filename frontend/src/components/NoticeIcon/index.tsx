@@ -1,12 +1,14 @@
-import { useEffect, useState } from 'react';
-import { Tag, message } from 'antd';
+import { useModel } from 'umi';
+import { ResGetNotice } from '@/shared/protocols/antd/PtlGetNotice';
+import { apiClient } from '@/utils/apiClient/apiClient';
+import { useCallApi } from '@/utils/tsrpc-react/useCallApi';
+import { message, Tag } from 'antd';
 import { groupBy } from 'lodash';
 import moment from 'moment';
-import { useModel, useRequest } from 'umi';
-import { getNotices } from '@/services/ant-design-pro/api';
-
-import NoticeIcon from './NoticeIcon';
+import { useEffect, useState } from 'react';
 import styles from './index.less';
+import NoticeIcon from './NoticeIcon';
+
 
 export type GlobalHeaderRightProps = {
   fetchingNotices?: boolean;
@@ -14,7 +16,7 @@ export type GlobalHeaderRightProps = {
   onNoticeClear?: (tabName?: string) => void;
 };
 
-const getNoticeData = (notices: API.NoticeIconItem[]): Record<string, API.NoticeIconItem[]> => {
+const getNoticeData = (notices: ResGetNotice['data']): Record<string, ResGetNotice['data']> => {
   if (!notices || notices.length === 0 || !Array.isArray(notices)) {
     return {};
   }
@@ -54,7 +56,7 @@ const getNoticeData = (notices: API.NoticeIconItem[]): Record<string, API.Notice
   return groupBy(newNotices, 'type');
 };
 
-const getUnreadData = (noticeData: Record<string, API.NoticeIconItem[]>) => {
+const getUnreadData = (noticeData: Record<string, ResGetNotice['data']>) => {
   const unreadMsg: Record<string, number> = {};
   Object.keys(noticeData).forEach((key) => {
     const value = noticeData[key];
@@ -73,12 +75,12 @@ const getUnreadData = (noticeData: Record<string, API.NoticeIconItem[]>) => {
 const NoticeIconView = () => {
   const { initialState } = useModel('@@initialState');
   const { currentUser } = initialState || {};
-  const [notices, setNotices] = useState<API.NoticeIconItem[]>([]);
-  const { data } = useRequest(getNotices);
+  const [notices, setNotices] = useState<ResGetNotice['data']>([]);
+  const { res } = useCallApi(apiClient, 'antd/GetNotice', {});
 
   useEffect(() => {
-    setNotices(data || []);
-  }, [data]);
+    setNotices(res?.data || []);
+  }, [res?.data]);
 
   const noticeData = getNoticeData(notices);
   const unreadMsg = getUnreadData(noticeData || {});
