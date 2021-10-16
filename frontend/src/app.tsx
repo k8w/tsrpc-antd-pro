@@ -8,7 +8,6 @@ import { history } from 'umi';
 import { apiClient } from './utils/apiClient/apiClient';
 import { CurrentUser } from './shared/data/CurrentUser';
 
-const isDev = process.env.NODE_ENV === 'development';
 const loginPath = '/user/login';
 
 /** 获取用户信息比较慢的时候会展示一个 loading */
