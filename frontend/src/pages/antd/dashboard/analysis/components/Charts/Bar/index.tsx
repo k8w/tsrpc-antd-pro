@@ -1,9 +1,9 @@
 import { Axis, Chart, Geom, Tooltip } from 'bizcharts';
-import React, { Component } from 'react';
-
 import Debounce from 'lodash.debounce';
+import React, { Component } from 'react';
 import autoHeight from '../autoHeight';
 import styles from '../index.less';
+
 
 export type BarProps = {
   title: React.ReactNode;
@@ -120,8 +120,8 @@ class Bar extends Component<
               label={autoHideXLabels ? undefined : {}}
               tickLine={autoHideXLabels ? undefined : {}}
             />
-            <Axis name="y" min={0} />
-            <Tooltip showTitle={false} crosshairs={false} />
+            <Axis name="y" />
+            <Tooltip showTitle={false} />
             <Geom type="interval" position="x*y" color={color} tooltip={tooltip} />
           </Chart>
         </div>

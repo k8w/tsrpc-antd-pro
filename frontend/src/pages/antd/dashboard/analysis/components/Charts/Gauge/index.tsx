@@ -1,9 +1,10 @@
-import { Axis, Chart, Coord, Geom, Guide, Shape } from 'bizcharts';
-
+import { Axis, Chart, Coord, Geom, Guide } from 'bizcharts';
+import { Html } from 'bizcharts/lib/components/Annotation';
 import React from 'react';
 import autoHeight from '../autoHeight';
 
-const { Arc, Html, Line } = Guide;
+
+const { Arc, Line } = Guide;
 
 export type GaugeProps = {
   title: React.ReactNode;
@@ -30,40 +31,6 @@ const defaultFormatter = (val: string): string => {
       return '';
   }
 };
-
-if (Shape.registerShape) {
-  Shape.registerShape('point', 'pointer', {
-    drawShape(cfg: any, group: any) {
-      let point = cfg.points[0];
-      point = (this as any).parsePoint(point);
-      const center = (this as any).parsePoint({
-        x: 0,
-        y: 0,
-      });
-      group.addShape('line', {
-        attrs: {
-          x1: center.x,
-          y1: center.y,
-          x2: point.x,
-          y2: point.y,
-          stroke: cfg.color,
-          lineWidth: 2,
-          lineCap: 'round',
-        },
-      });
-      return group.addShape('circle', {
-        attrs: {
-          x: center.x,
-          y: center.y,
-          r: 6,
-          stroke: cfg.color,
-          lineWidth: 3,
-          fill: '#fff',
-        },
-      });
-    },
-  });
-}
 
 const Gauge: React.FC<GaugeProps> = (props) => {
   const {
@@ -92,15 +59,6 @@ const Gauge: React.FC<GaugeProps> = (props) => {
         ${(data[0].value * 10).toFixed(2)}%
       </div>
     </div>`;
-  const textStyle: {
-    fontSize: number;
-    fill: string;
-    textAlign: 'center';
-  } = {
-    fontSize: 12,
-    fill: 'rgba(0, 0, 0, 0.65)',
-    textAlign: 'center',
-  };
 
   return (
     <Chart height={height} data={data} scale={cols} padding={[-16, 0, 16, 0]} forceFit={forceFit}>
@@ -111,11 +69,9 @@ const Gauge: React.FC<GaugeProps> = (props) => {
         tickLine={undefined}
         subTickLine={undefined}
         name="value"
-        zIndex={2}
         label={{
           offset: -12,
           formatter,
-          textStyle,
         }}
       />
       <Guide>

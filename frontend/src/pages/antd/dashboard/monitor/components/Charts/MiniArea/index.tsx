@@ -1,4 +1,3 @@
-import type { AxisProps } from 'bizcharts';
 import { Axis, Chart, Geom, Tooltip } from 'bizcharts';
 
 import React from 'react';
@@ -11,7 +10,6 @@ export type MiniAreaProps = {
   borderColor?: string;
   line?: boolean;
   animate?: boolean;
-  xAxis?: AxisProps;
   forceFit?: boolean;
   scale?: {
     x?: {
@@ -21,7 +19,6 @@ export type MiniAreaProps = {
       tickCount: number;
     };
   };
-  yAxis?: Partial<AxisProps>;
   borderWidth?: number;
   data: {
     x: number | string;
@@ -39,8 +36,6 @@ const MiniArea: React.FC<MiniAreaProps> = (props) => {
     scale = { x: {}, y: {} },
     borderWidth = 2,
     line,
-    xAxis,
-    yAxis,
     animate = true,
   } = props;
 
@@ -87,7 +82,6 @@ const MiniArea: React.FC<MiniAreaProps> = (props) => {
               line={null}
               tickLine={null}
               grid={null}
-              {...xAxis}
             />
             <Axis
               key="axis-y"
@@ -96,9 +90,8 @@ const MiniArea: React.FC<MiniAreaProps> = (props) => {
               line={null}
               tickLine={null}
               grid={null}
-              {...yAxis}
             />
-            <Tooltip showTitle={false} crosshairs={false} />
+            <Tooltip showTitle={false} />
             <Geom
               type="area"
               position="x*y"

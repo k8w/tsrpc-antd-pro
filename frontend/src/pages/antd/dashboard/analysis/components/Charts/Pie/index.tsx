@@ -1,13 +1,13 @@
-import { Chart, Coord, Geom, Tooltip } from 'bizcharts';
-import React, { Component } from 'react';
-
 import { DataView } from '@antv/data-set';
-import Debounce from 'lodash.debounce';
 import { Divider } from 'antd';
-import ReactFitText from 'react-fittext';
+import { Chart, Coord, G2, Geom, Tooltip } from 'bizcharts';
 import classNames from 'classnames';
+import Debounce from 'lodash.debounce';
+import React, { Component } from 'react';
+import ReactFitText from 'react-fittext';
 import autoHeight from '../autoHeight';
 import styles from './index.less';
+
 
 export type PieProps = {
   animate?: boolean;
@@ -85,15 +85,6 @@ class Pie extends Component<PieProps, PieState> {
     );
   }
 
-  componentDidUpdate(preProps: PieProps) {
-    const { data } = this.props;
-    if (data !== preProps.data) {
-      // because of charts data create when rendered
-      // so there is a trick for get rendered time
-      this.getLegendData();
-    }
-  }
-
   componentWillUnmount() {
     if (this.requestRef) {
       window.cancelAnimationFrame(this.requestRef);
@@ -107,28 +98,7 @@ class Pie extends Component<PieProps, PieState> {
   getG2Instance = (chart: G2.Chart) => {
     this.chart = chart;
     requestAnimationFrame(() => {
-      this.getLegendData();
       this.resize();
-    });
-  };
-
-  // for custom lengend view
-  getLegendData = () => {
-    if (!this.chart) return;
-    const geom = this.chart.getAllGeoms()[0]; // 获取所有的图形
-    if (!geom) return;
-    const items = (geom as any).get('dataArray') || []; // 获取图形对应的
-
-    const legendData = items.map((item: { color: any; _origin: any }[]) => {
-      /* eslint no-underscore-dangle:0 */
-      const origin = item[0]._origin;
-      origin.color = item[0].color;
-      origin.checked = true;
-      return origin;
-    });
-
-    this.setState({
-      legendData,
     });
   };
 
@@ -142,12 +112,6 @@ class Pie extends Component<PieProps, PieState> {
 
     const { legendData } = this.state;
     legendData[i] = newItem;
-
-    const filteredLegendData = legendData.filter((l) => l.checked).map((l) => l.x);
-
-    if (this.chart) {
-      this.chart.filter('x', (val) => filteredLegendData.indexOf(`${val}`) > -1);
-    }
 
     this.setState({
       legendData,
@@ -262,7 +226,7 @@ class Pie extends Component<PieProps, PieState> {
               <Geom
                 style={{ lineWidth, stroke: '#fff' }}
                 tooltip={tooltip ? tooltipFormat : undefined}
-                type="intervalStack"
+                type='interval'
                 position="percent"
                 color={['x', percent || percent === 0 ? formatColor : defaultColors] as any}
                 selected={selected}
