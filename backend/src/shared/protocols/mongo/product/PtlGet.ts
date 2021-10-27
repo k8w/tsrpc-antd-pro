@@ -1,4 +1,4 @@
-import { DbOrder } from '../../../data/db/DbOrder';
+import { DbProduct } from '../../../data/db/DbProduct';
 import { BaseConf, BaseRequest, BaseResponse } from '../../base';
 
 export interface ReqGet extends BaseRequest {
@@ -15,7 +15,7 @@ export interface ReqGet extends BaseRequest {
 }
 
 export interface ResGet extends BaseResponse {
-    data: DbOrder[],
+    data: DbProduct[],
     total: number
 }
 

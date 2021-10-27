@@ -21,6 +21,7 @@
     "typescript": "^4.4.4"
   },
   "dependencies": {
+    "mongodb": "^4.1.3",
     "nanoid": "^3.1.30",
     "tsrpc": "^3.0.13"
   }

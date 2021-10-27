@@ -1,9 +1,9 @@
-import { DbOrder } from '../../../data/db/DbOrder';
-import { BaseConf, BaseRequest, BaseResponse } from '../../base';
 import { ObjectId } from 'mongodb';
+import { DbProduct } from '../../../data/db/DbProduct';
+import { BaseConf, BaseRequest, BaseResponse } from '../../base';
 
 export interface ReqAdd extends BaseRequest {
-    order: Omit<DbOrder, '_id' | 'create' | 'update'>;
+    product: Omit<DbProduct, '_id' | 'create' | 'update'>;
 }
 
 export interface ResAdd extends BaseResponse {

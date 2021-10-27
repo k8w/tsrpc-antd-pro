@@ -1,7 +1,8 @@
-import fs from "fs/promises";
 import 'k8w-extend-native';
 import * as path from "path";
-import { HttpConnection, HttpServer } from "tsrpc";
+import { HttpServer } from "tsrpc";
+import { Global } from './models/Global';
+import { serveStaticFiles } from "./models/serveStaticFiles";
 import { serviceProto } from "./shared/protocols/serviceProto";
 
 // Create the Server
@@ -10,36 +11,25 @@ const server = new HttpServer(serviceProto, {
     cors: '*'
 });
 
-// Flow: Serve static files
-server.flows.preRecvBufferFlow.push(async v => {
-    let conn = v.conn as HttpConnection;
-    if (conn.httpReq.method === 'GET') {
-        if (conn.httpReq.url?.startsWith('/uploads/')) {
-            let file = await fs.readFile(decodeURIComponent(conn.httpReq.url.replace(/^\//, ''))).catch(e => { });
-            if (file) {
-                server.logger.log('GET', conn.httpReq.url);
-                conn.httpRes.end(file);
-                return undefined;
-            }
-        }
-
-        conn.httpRes.statusCode = 404;
-        conn.httpRes.end('<h1>File Not Found</h1>')
-        return undefined;
+// 扩展 Call 自定义字段
+declare module 'tsrpc' {
+    export interface ApiCall {
+        /** 当前登录的用户 uid（未登录为 ''） */
+        currentUid: string;
     }
-
-    return v;
-})
+}
 
 // Entry function
 async function main() {
+    // Extends Flow
+    // Static file server for '/uploads/*'
+    await serveStaticFiles(server, '/uploads/', 'uploads')
+
     // Auto implement APIs
     await server.autoImplementApi(path.resolve(__dirname, 'api'));
 
-    // Init upload dir
-    if (await fs.access('uploads').catch(() => true)) {
-        await fs.mkdir('uploads');
-    }
+    // Init Global
+    await Global.init();
 
     await server.start();
 };

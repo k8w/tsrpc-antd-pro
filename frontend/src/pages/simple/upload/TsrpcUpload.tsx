@@ -1,6 +1,6 @@
-import { ResUploadFile } from "@/shared/protocols/simple/PtlUploadFile";
 import { apiClient } from "@/models/apiClient/apiClient";
 import { useScopedClient } from "@/models/tsrpc-react/useScopedClient";
+import { ResUploadFile } from "@/shared/protocols/simple/PtlUploadFile";
 import { UploadOutlined } from "@ant-design/icons";
 import { Button, Upload } from "antd";
 import { UploadFile } from "antd/lib/upload/interface";
@@ -19,7 +19,7 @@ export default (props: {
         status: 'done'
     }] : []);
 
-    // 预览用的 URL
+    // 点击预览打开的 URL
     fileList.forEach(v => {
         v.url = v.response?.url
     })
@@ -32,22 +32,22 @@ export default (props: {
             // 只上报已上传完成的
             props.onChange?.(e.fileList.find(v => v.status === 'done')?.response?.url);
         }}
+        // 自定义上传网络请求，改为接入 TSRPC
         customRequest={async req => {
             // 将文件读取为 UintArray
             let file = req.file as File;
             let buf = await file.arrayBuffer();
 
+            // 调用上传接口（与普通接口无异）
             client.callApi('simple/UploadFile', {
                 fileName: file.name,
                 fileData: new Uint8Array(buf)
             }).then(ret => {
                 if (ret.isSucc) {
-                    // @ts-ignore (ANTD 类型定义 BUG)
-                    req.onSuccess?.(ret.res);
+                    req.onSuccess?.(ret.res, undefined as any);
                 }
                 else {
-                    // @ts-ignore (ANTD 类型定义 BUG)
-                    req.onError?.(ret.err)
+                    req.onError?.(ret.err as any)
                 }
             })
         }}
