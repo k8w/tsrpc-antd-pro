@@ -1,7 +1,8 @@
+import { ObjectId } from 'mongodb';
 import { DbOrder } from '../../../data/db/DbOrder';
 import { BaseConf, BaseRequest, BaseResponse } from '../../base';
-import { ObjectId } from 'mongodb';
 
+/** 创建新订单 */
 export interface ReqAdd extends BaseRequest {
     order: Omit<DbOrder, '_id' | 'create' | 'update'>;
 }

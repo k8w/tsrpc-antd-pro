@@ -10,6 +10,8 @@ export interface DbOrder {
     products: {
         /** 产品 ID */
         _id: ObjectId,
+        /** 下单时的商品名 */
+        name: string,
         /** 下单时的单价 */
         price: number,
         /** 数量 */
@@ -28,14 +30,14 @@ export interface DbOrder {
     create: {
         /** 创建时间 */
         time: Date,
-        /** 创建的管理员 uid */
-        adminUid: string
+        /** 创建人 */
+        uid: string
     },
     /** 更新时间、更新人 */
     update?: {
         /** 最后更新时间 */
         time: Date,
-        /** 最后更新的管理员 uid */
-        adminUid: string
+        /** 更新人 */
+        uid: string
     },
 }

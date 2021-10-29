@@ -1,6 +1,7 @@
 import { ObjectId } from 'mongodb';
-import { BaseRequest, BaseResponse, BaseConf } from '../../base'
+import { BaseConf, BaseRequest, BaseResponse } from '../../base';
 
+/** 批量删除订单 */
 export interface ReqDel extends BaseRequest {
     _ids: ObjectId[]
 }

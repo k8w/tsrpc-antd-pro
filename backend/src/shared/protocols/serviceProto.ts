@@ -1,7 +1,7 @@
 import { ServiceProto } from 'tsrpc-proto';
 import { ReqGetNotice, ResGetNotice } from './antd/PtlGetNotice';
-import { ReqAggregate, ResAggregate } from './mongo/advanced/PtlAggregate';
-import { ReqJoinQuery, ResJoinQuery } from './mongo/advanced/PtlJoinQuery';
+import { ReqGetOrderWithProducts, ResGetOrderWithProducts } from './mongo/advanced/PtlGetOrderWithProducts';
+import { ReqGetProductWithOrders, ResGetProductWithOrders } from './mongo/advanced/PtlGetProductWithOrders';
 import { ReqAdd, ResAdd } from './mongo/order/PtlAdd';
 import { ReqDel, ResDel } from './mongo/order/PtlDel';
 import { ReqGet, ResGet } from './mongo/order/PtlGet';
@@ -23,13 +23,13 @@ export interface ServiceType {
             req: ReqGetNotice,
             res: ResGetNotice
         },
-        "mongo/advanced/Aggregate": {
-            req: ReqAggregate,
-            res: ResAggregate
+        "mongo/advanced/GetOrderWithProducts": {
+            req: ReqGetOrderWithProducts,
+            res: ResGetOrderWithProducts
         },
-        "mongo/advanced/JoinQuery": {
-            req: ReqJoinQuery,
-            res: ResJoinQuery
+        "mongo/advanced/GetProductWithOrders": {
+            req: ReqGetProductWithOrders,
+            res: ResGetProductWithOrders
         },
         "mongo/order/Add": {
             req: ReqAdd,
@@ -94,7 +94,7 @@ export interface ServiceType {
 }
 
 export const serviceProto: ServiceProto<ServiceType> = {
-    "version": 9,
+    "version": 13,
     "services": [
         {
             "id": 24,
@@ -102,20 +102,14 @@ export const serviceProto: ServiceProto<ServiceType> = {
             "type": "api"
         },
         {
-            "id": 7,
-            "name": "mongo/advanced/Aggregate",
-            "type": "api",
-            "conf": {
-                "needLogin": true
-            }
+            "id": 29,
+            "name": "mongo/advanced/GetOrderWithProducts",
+            "type": "api"
         },
         {
-            "id": 8,
-            "name": "mongo/advanced/JoinQuery",
-            "type": "api",
-            "conf": {
-                "needLogin": true
-            }
+            "id": 30,
+            "name": "mongo/advanced/GetProductWithOrders",
+            "type": "api"
         },
         {
             "id": 9,
@@ -354,7 +348,7 @@ export const serviceProto: ServiceProto<ServiceType> = {
                 }
             ]
         },
-        "mongo/advanced/PtlAggregate/ReqAggregate": {
+        "mongo/advanced/PtlGetOrderWithProducts/ReqGetOrderWithProducts": {
             "type": "Interface",
             "extends": [
                 {
@@ -362,6 +356,13 @@ export const serviceProto: ServiceProto<ServiceType> = {
                     "type": {
                         "type": "Reference",
                         "target": "base/BaseRequest"
+                    }
+                },
+                {
+                    "id": 1,
+                    "type": {
+                        "type": "Reference",
+                        "target": "../data/ReqAntdTable/ReqAntdTable"
                     }
                 }
             ]
@@ -379,7 +380,28 @@ export const serviceProto: ServiceProto<ServiceType> = {
                 }
             ]
         },
-        "mongo/advanced/PtlAggregate/ResAggregate": {
+        "../data/ReqAntdTable/ReqAntdTable": {
+            "type": "Interface",
+            "properties": [
+                {
+                    "id": 0,
+                    "name": "current",
+                    "type": {
+                        "type": "Number"
+                    },
+                    "optional": true
+                },
+                {
+                    "id": 1,
+                    "name": "pageSize",
+                    "type": {
+                        "type": "Number"
+                    },
+                    "optional": true
+                }
+            ]
+        },
+        "mongo/advanced/PtlGetOrderWithProducts/ResGetOrderWithProducts": {
             "type": "Interface",
             "extends": [
                 {
@@ -387,66 +409,74 @@ export const serviceProto: ServiceProto<ServiceType> = {
                     "type": {
                         "type": "Reference",
                         "target": "base/BaseResponse"
-                    }
-                }
-            ]
-        },
-        "base/BaseResponse": {
-            "type": "Interface"
-        },
-        "mongo/advanced/PtlJoinQuery/ReqJoinQuery": {
-            "type": "Interface",
-            "extends": [
-                {
-                    "id": 0,
-                    "type": {
-                        "type": "Reference",
-                        "target": "base/BaseRequest"
-                    }
-                }
-            ]
-        },
-        "mongo/advanced/PtlJoinQuery/ResJoinQuery": {
-            "type": "Interface",
-            "extends": [
-                {
-                    "id": 0,
-                    "type": {
-                        "type": "Reference",
-                        "target": "base/BaseResponse"
-                    }
-                }
-            ]
-        },
-        "mongo/order/PtlAdd/ReqAdd": {
-            "type": "Interface",
-            "extends": [
-                {
-                    "id": 0,
-                    "type": {
-                        "type": "Reference",
-                        "target": "base/BaseRequest"
                     }
                 }
             ],
             "properties": [
                 {
                     "id": 0,
-                    "name": "order",
+                    "name": "data",
                     "type": {
-                        "target": {
-                            "type": "Reference",
-                            "target": "../data/db/DbOrder/DbOrder"
-                        },
-                        "keys": [
-                            "_id",
-                            "create",
-                            "update"
-                        ],
-                        "type": "Omit"
+                        "type": "Array",
+                        "elementType": {
+                            "type": "Overwrite",
+                            "target": {
+                                "type": "Reference",
+                                "target": "../data/db/DbOrder/DbOrder"
+                            },
+                            "overwrite": {
+                                "type": "Interface",
+                                "properties": [
+                                    {
+                                        "id": 0,
+                                        "name": "products",
+                                        "type": {
+                                            "type": "Array",
+                                            "elementType": {
+                                                "type": "Intersection",
+                                                "members": [
+                                                    {
+                                                        "id": 0,
+                                                        "type": {
+                                                            "type": "Reference",
+                                                            "target": "../data/db/DbProduct/DbProduct"
+                                                        }
+                                                    },
+                                                    {
+                                                        "id": 1,
+                                                        "type": {
+                                                            "type": "Interface",
+                                                            "properties": [
+                                                                {
+                                                                    "id": 0,
+                                                                    "name": "amount",
+                                                                    "type": {
+                                                                        "type": "Number"
+                                                                    }
+                                                                }
+                                                            ]
+                                                        }
+                                                    }
+                                                ]
+                                            }
+                                        }
+                                    }
+                                ]
+                            }
+                        }
+                    }
+                },
+                {
+                    "id": 1,
+                    "name": "total",
+                    "type": {
+                        "type": "Number"
                     }
                 }
             ]
+        },
+        "base/BaseResponse": {
+            "type": "Interface"
         },
         "../data/db/DbOrder/DbOrder": {
             "type": "Interface",
@@ -473,6 +503,13 @@ export const serviceProto: ServiceProto<ServiceType> = {
                                     "type": {
                                         "type": "Reference",
                                         "target": "?mongodb/ObjectId"
+                                    }
+                                },
+                                {
+                                    "id": 3,
+                                    "name": "name",
+                                    "type": {
+                                        "type": "String"
                                     }
                                 },
                                 {
@@ -528,8 +565,8 @@ export const serviceProto: ServiceProto<ServiceType> = {
                                 }
                             },
                             {
-                                "id": 1,
-                                "name": "adminUid",
+                                "id": 2,
+                                "name": "uid",
                                 "type": {
                                     "type": "String"
                                 }
@@ -551,8 +588,8 @@ export const serviceProto: ServiceProto<ServiceType> = {
                                 }
                             },
                             {
-                                "id": 1,
-                                "name": "adminUid",
+                                "id": 2,
+                                "name": "uid",
                                 "type": {
                                     "type": "String"
                                 }
@@ -560,247 +597,6 @@ export const serviceProto: ServiceProto<ServiceType> = {
                         ]
                     },
                     "optional": true
-                }
-            ]
-        },
-        "mongo/order/PtlAdd/ResAdd": {
-            "type": "Interface",
-            "extends": [
-                {
-                    "id": 0,
-                    "type": {
-                        "type": "Reference",
-                        "target": "base/BaseResponse"
-                    }
-                }
-            ],
-            "properties": [
-                {
-                    "id": 0,
-                    "name": "insertedId",
-                    "type": {
-                        "type": "Reference",
-                        "target": "?mongodb/ObjectId"
-                    }
-                }
-            ]
-        },
-        "mongo/order/PtlDel/ReqDel": {
-            "type": "Interface",
-            "extends": [
-                {
-                    "id": 0,
-                    "type": {
-                        "type": "Reference",
-                        "target": "base/BaseRequest"
-                    }
-                }
-            ],
-            "properties": [
-                {
-                    "id": 0,
-                    "name": "_ids",
-                    "type": {
-                        "type": "Array",
-                        "elementType": {
-                            "type": "Reference",
-                            "target": "?mongodb/ObjectId"
-                        }
-                    }
-                }
-            ]
-        },
-        "mongo/order/PtlDel/ResDel": {
-            "type": "Interface",
-            "extends": [
-                {
-                    "id": 0,
-                    "type": {
-                        "type": "Reference",
-                        "target": "base/BaseResponse"
-                    }
-                }
-            ],
-            "properties": [
-                {
-                    "id": 0,
-                    "name": "deletedCount",
-                    "type": {
-                        "type": "Number"
-                    }
-                }
-            ]
-        },
-        "mongo/order/PtlGet/ReqGet": {
-            "type": "Interface",
-            "extends": [
-                {
-                    "id": 0,
-                    "type": {
-                        "type": "Reference",
-                        "target": "base/BaseRequest"
-                    }
-                }
-            ],
-            "properties": [
-                {
-                    "id": 0,
-                    "name": "current",
-                    "type": {
-                        "type": "Number"
-                    },
-                    "optional": true
-                },
-                {
-                    "id": 1,
-                    "name": "pageSize",
-                    "type": {
-                        "type": "Number"
-                    },
-                    "optional": true
-                }
-            ]
-        },
-        "mongo/order/PtlGet/ResGet": {
-            "type": "Interface",
-            "extends": [
-                {
-                    "id": 0,
-                    "type": {
-                        "type": "Reference",
-                        "target": "base/BaseResponse"
-                    }
-                }
-            ],
-            "properties": [
-                {
-                    "id": 0,
-                    "name": "data",
-                    "type": {
-                        "type": "Array",
-                        "elementType": {
-                            "type": "Reference",
-                            "target": "../data/db/DbOrder/DbOrder"
-                        }
-                    }
-                },
-                {
-                    "id": 1,
-                    "name": "total",
-                    "type": {
-                        "type": "Number"
-                    }
-                }
-            ]
-        },
-        "mongo/order/PtlUpdate/ReqUpdate": {
-            "type": "Interface",
-            "extends": [
-                {
-                    "id": 0,
-                    "type": {
-                        "type": "Reference",
-                        "target": "base/BaseRequest"
-                    }
-                }
-            ],
-            "properties": [
-                {
-                    "id": 0,
-                    "name": "product",
-                    "type": {
-                        "type": "Intersection",
-                        "members": [
-                            {
-                                "id": 0,
-                                "type": {
-                                    "target": {
-                                        "type": "Reference",
-                                        "target": "../data/db/DbOrder/DbOrder"
-                                    },
-                                    "keys": [
-                                        "_id"
-                                    ],
-                                    "type": "Pick"
-                                }
-                            },
-                            {
-                                "id": 1,
-                                "type": {
-                                    "type": "Partial",
-                                    "target": {
-                                        "target": {
-                                            "type": "Reference",
-                                            "target": "../data/db/DbOrder/DbOrder"
-                                        },
-                                        "keys": [
-                                            "seller",
-                                            "remark"
-                                        ],
-                                        "type": "Pick"
-                                    }
-                                }
-                            }
-                        ]
-                    }
-                }
-            ]
-        },
-        "mongo/order/PtlUpdate/ResUpdate": {
-            "type": "Interface",
-            "extends": [
-                {
-                    "id": 0,
-                    "type": {
-                        "type": "Reference",
-                        "target": "base/BaseResponse"
-                    }
-                }
-            ],
-            "properties": [
-                {
-                    "id": 0,
-                    "name": "matchedCount",
-                    "type": {
-                        "type": "Number"
-                    }
-                },
-                {
-                    "id": 1,
-                    "name": "modifiedCount",
-                    "type": {
-                        "type": "Number"
-                    }
-                }
-            ]
-        },
-        "mongo/product/PtlAdd/ReqAdd": {
-            "type": "Interface",
-            "extends": [
-                {
-                    "id": 0,
-                    "type": {
-                        "type": "Reference",
-                        "target": "base/BaseRequest"
-                    }
-                }
-            ],
-            "properties": [
-                {
-                    "id": 0,
-                    "name": "product",
-                    "type": {
-                        "target": {
-                            "type": "Reference",
-                            "target": "../data/db/DbProduct/DbProduct"
-                        },
-                        "keys": [
-                            "_id",
-                            "create",
-                            "update"
-                        ],
-                        "type": "Omit"
-                    }
                 }
             ]
         },
@@ -885,6 +681,337 @@ export const serviceProto: ServiceProto<ServiceType> = {
                 }
             ]
         },
+        "mongo/advanced/PtlGetProductWithOrders/ReqGetProductWithOrders": {
+            "type": "Interface",
+            "extends": [
+                {
+                    "id": 0,
+                    "type": {
+                        "type": "Reference",
+                        "target": "base/BaseRequest"
+                    }
+                },
+                {
+                    "id": 1,
+                    "type": {
+                        "type": "Reference",
+                        "target": "../data/ReqAntdTable/ReqAntdTable"
+                    }
+                }
+            ]
+        },
+        "mongo/advanced/PtlGetProductWithOrders/ResGetProductWithOrders": {
+            "type": "Interface",
+            "extends": [
+                {
+                    "id": 0,
+                    "type": {
+                        "type": "Reference",
+                        "target": "base/BaseResponse"
+                    }
+                }
+            ],
+            "properties": [
+                {
+                    "id": 0,
+                    "name": "data",
+                    "type": {
+                        "type": "Array",
+                        "elementType": {
+                            "type": "Intersection",
+                            "members": [
+                                {
+                                    "id": 0,
+                                    "type": {
+                                        "type": "Reference",
+                                        "target": "../data/db/DbProduct/DbProduct"
+                                    }
+                                },
+                                {
+                                    "id": 1,
+                                    "type": {
+                                        "type": "Interface",
+                                        "properties": [
+                                            {
+                                                "id": 0,
+                                                "name": "orders",
+                                                "type": {
+                                                    "type": "Array",
+                                                    "elementType": {
+                                                        "type": "Reference",
+                                                        "target": "../data/db/DbOrder/DbOrder"
+                                                    }
+                                                }
+                                            }
+                                        ]
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                },
+                {
+                    "id": 1,
+                    "name": "total",
+                    "type": {
+                        "type": "Number"
+                    }
+                }
+            ]
+        },
+        "mongo/order/PtlAdd/ReqAdd": {
+            "type": "Interface",
+            "extends": [
+                {
+                    "id": 0,
+                    "type": {
+                        "type": "Reference",
+                        "target": "base/BaseRequest"
+                    }
+                }
+            ],
+            "properties": [
+                {
+                    "id": 0,
+                    "name": "order",
+                    "type": {
+                        "target": {
+                            "type": "Reference",
+                            "target": "../data/db/DbOrder/DbOrder"
+                        },
+                        "keys": [
+                            "_id",
+                            "create",
+                            "update"
+                        ],
+                        "type": "Omit"
+                    }
+                }
+            ]
+        },
+        "mongo/order/PtlAdd/ResAdd": {
+            "type": "Interface",
+            "extends": [
+                {
+                    "id": 0,
+                    "type": {
+                        "type": "Reference",
+                        "target": "base/BaseResponse"
+                    }
+                }
+            ],
+            "properties": [
+                {
+                    "id": 0,
+                    "name": "insertedId",
+                    "type": {
+                        "type": "Reference",
+                        "target": "?mongodb/ObjectId"
+                    }
+                }
+            ]
+        },
+        "mongo/order/PtlDel/ReqDel": {
+            "type": "Interface",
+            "extends": [
+                {
+                    "id": 0,
+                    "type": {
+                        "type": "Reference",
+                        "target": "base/BaseRequest"
+                    }
+                }
+            ],
+            "properties": [
+                {
+                    "id": 0,
+                    "name": "_ids",
+                    "type": {
+                        "type": "Array",
+                        "elementType": {
+                            "type": "Reference",
+                            "target": "?mongodb/ObjectId"
+                        }
+                    }
+                }
+            ]
+        },
+        "mongo/order/PtlDel/ResDel": {
+            "type": "Interface",
+            "extends": [
+                {
+                    "id": 0,
+                    "type": {
+                        "type": "Reference",
+                        "target": "base/BaseResponse"
+                    }
+                }
+            ],
+            "properties": [
+                {
+                    "id": 0,
+                    "name": "deletedCount",
+                    "type": {
+                        "type": "Number"
+                    }
+                }
+            ]
+        },
+        "mongo/order/PtlGet/ReqGet": {
+            "type": "Interface",
+            "extends": [
+                {
+                    "id": 0,
+                    "type": {
+                        "type": "Reference",
+                        "target": "base/BaseRequest"
+                    }
+                },
+                {
+                    "id": 1,
+                    "type": {
+                        "type": "Reference",
+                        "target": "../data/ReqAntdTable/ReqAntdTable"
+                    }
+                }
+            ]
+        },
+        "mongo/order/PtlGet/ResGet": {
+            "type": "Interface",
+            "extends": [
+                {
+                    "id": 0,
+                    "type": {
+                        "type": "Reference",
+                        "target": "base/BaseResponse"
+                    }
+                }
+            ],
+            "properties": [
+                {
+                    "id": 0,
+                    "name": "data",
+                    "type": {
+                        "type": "Array",
+                        "elementType": {
+                            "type": "Reference",
+                            "target": "../data/db/DbOrder/DbOrder"
+                        }
+                    }
+                },
+                {
+                    "id": 1,
+                    "name": "total",
+                    "type": {
+                        "type": "Number"
+                    }
+                }
+            ]
+        },
+        "mongo/order/PtlUpdate/ReqUpdate": {
+            "type": "Interface",
+            "extends": [
+                {
+                    "id": 0,
+                    "type": {
+                        "type": "Reference",
+                        "target": "base/BaseRequest"
+                    }
+                }
+            ],
+            "properties": [
+                {
+                    "id": 1,
+                    "name": "update",
+                    "type": {
+                        "type": "Intersection",
+                        "members": [
+                            {
+                                "id": 0,
+                                "type": {
+                                    "target": {
+                                        "type": "Reference",
+                                        "target": "../data/db/DbOrder/DbOrder"
+                                    },
+                                    "keys": [
+                                        "_id"
+                                    ],
+                                    "type": "Pick"
+                                }
+                            },
+                            {
+                                "id": 1,
+                                "type": {
+                                    "type": "Partial",
+                                    "target": {
+                                        "target": {
+                                            "type": "Reference",
+                                            "target": "../data/db/DbOrder/DbOrder"
+                                        },
+                                        "keys": [
+                                            "seller",
+                                            "remark"
+                                        ],
+                                        "type": "Pick"
+                                    }
+                                }
+                            }
+                        ]
+                    }
+                }
+            ]
+        },
+        "mongo/order/PtlUpdate/ResUpdate": {
+            "type": "Interface",
+            "extends": [
+                {
+                    "id": 0,
+                    "type": {
+                        "type": "Reference",
+                        "target": "base/BaseResponse"
+                    }
+                }
+            ],
+            "properties": [
+                {
+                    "id": 0,
+                    "name": "matchedCount",
+                    "type": {
+                        "type": "Number"
+                    }
+                }
+            ]
+        },
+        "mongo/product/PtlAdd/ReqAdd": {
+            "type": "Interface",
+            "extends": [
+                {
+                    "id": 0,
+                    "type": {
+                        "type": "Reference",
+                        "target": "base/BaseRequest"
+                    }
+                }
+            ],
+            "properties": [
+                {
+                    "id": 0,
+                    "name": "product",
+                    "type": {
+                        "target": {
+                            "type": "Reference",
+                            "target": "../data/db/DbProduct/DbProduct"
+                        },
+                        "keys": [
+                            "_id",
+                            "create",
+                            "update"
+                        ],
+                        "type": "Omit"
+                    }
+                }
+            ]
+        },
         "mongo/product/PtlAdd/ResAdd": {
             "type": "Interface",
             "extends": [
@@ -962,24 +1089,13 @@ export const serviceProto: ServiceProto<ServiceType> = {
                         "type": "Reference",
                         "target": "base/BaseRequest"
                     }
-                }
-            ],
-            "properties": [
-                {
-                    "id": 0,
-                    "name": "current",
-                    "type": {
-                        "type": "Number"
-                    },
-                    "optional": true
                 },
                 {
                     "id": 1,
-                    "name": "pageSize",
                     "type": {
-                        "type": "Number"
-                    },
-                    "optional": true
+                        "type": "Reference",
+                        "target": "../data/ReqAntdTable/ReqAntdTable"
+                    }
                 }
             ]
         },
@@ -1028,8 +1144,8 @@ export const serviceProto: ServiceProto<ServiceType> = {
             ],
             "properties": [
                 {
-                    "id": 0,
-                    "name": "product",
+                    "id": 1,
+                    "name": "update",
                     "type": {
                         "type": "Intersection",
                         "members": [
@@ -1047,7 +1163,7 @@ export const serviceProto: ServiceProto<ServiceType> = {
                                 }
                             },
                             {
-                                "id": 2,
+                                "id": 1,
                                 "type": {
                                     "type": "Partial",
                                     "target": {

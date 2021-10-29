@@ -1,17 +1,10 @@
 import { DbProduct } from '../../../data/db/DbProduct';
+import { ReqAntdTable } from '../../../data/ReqAntdTable';
 import { BaseConf, BaseRequest, BaseResponse } from '../../base';
 
-export interface ReqGet extends BaseRequest {
-    /**
-     * 页码，从 1 开始
-     * @defaultValue 1
-     */
-    current?: number;
-    /**
-     * 分页大小
-     * @defaultValue 20
-     */
-    pageSize?: number;
+/** 获得产品列表 */
+export interface ReqGet extends BaseRequest, ReqAntdTable {
+
 }
 
 export interface ResGet extends BaseResponse {

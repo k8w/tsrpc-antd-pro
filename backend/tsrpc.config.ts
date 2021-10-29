@@ -1,4 +1,9 @@
+/// <reference types="node" />
+
+import path from "path";
 import { TsrpcConfig } from 'tsrpc-cli';
+
+path.delimiter
 
 const tsrpcConf: TsrpcConfig = {
     // Generate ServiceProto
@@ -6,7 +11,17 @@ const tsrpcConf: TsrpcConfig = {
         {
             ptlDir: 'src/shared/protocols', // Protocol dir
             output: 'src/shared/protocols/serviceProto.ts', // Path for generated ServiceProto
-            apiDir: 'src/api'   // API dir
+            apiDir: 'src/api',   // API dir
+            // 自定义新协议模板（新建文件时自动填充）
+            newPtlTemplate: (basename, ptlPath, ptlDir) => `import { BaseRequest, BaseResponse } from "./${path.relative(path.dirname(ptlPath), path.join(ptlDir, 'base')).replace(/\\/g, '/')}";
+
+export interface Req${basename} extends BaseRequest {
+
+}
+
+export interface Res${basename} extends BaseResponse {
+
+}`
         }
     ],
     // Sync shared code
