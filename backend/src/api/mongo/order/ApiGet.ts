@@ -9,9 +9,9 @@ export async function ApiGet(call: ApiCall<ReqGet, ResGet>) {
     // 并行查询提高效率
     let [total, data] = await Promise.all([
         Global.collection('Order').countDocuments(),
-        Global.collection('Order').find({}).skip((current - 1) * pageSize).limit(current).toArray()
+        Global.collection('Order').find({}).skip((current - 1) * pageSize).limit(pageSize).toArray()
     ]);
-    
+
     call.succ({
         data: data,
         total: total

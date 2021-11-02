@@ -5,8 +5,8 @@ import { PageLoading } from '@ant-design/pro-layout';
 import 'k8w-extend-native';
 import type { RunTimeLayoutConfig } from 'umi';
 import { history } from 'umi';
-import { CurrentUser } from './shared/data/CurrentUser';
 import { apiClient } from './models/apiClient/apiClient';
+import { CurrentUser } from './shared/data/CurrentUser';
 
 const loginPath = '/login';
 
@@ -15,14 +15,16 @@ export const initialStateConfig = {
   loading: <PageLoading />,
 };
 
-/**
- * @see  https://umijs.org/zh-CN/plugins/plugin-initial-state
- * */
-export async function getInitialState(): Promise<{
+export interface InitialState {
   settings?: Partial<LayoutSettings>;
   currentUser?: CurrentUser;
   fetchUserInfo?: () => Promise<CurrentUser | undefined>;
-}> {
+}
+
+/**
+ * @see  https://umijs.org/zh-CN/plugins/plugin-initial-state
+ * */
+export async function getInitialState(): Promise<InitialState> {
   const fetchUserInfo = async () => {
     let ret = await apiClient.callApi('user/GetCurrentUser', {});
 

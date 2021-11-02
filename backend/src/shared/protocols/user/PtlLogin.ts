@@ -1,4 +1,4 @@
-import { UserRole } from '../../data/UserRole';
+import { DbUser } from '../../data/db/DbUser';
 import { BaseConf, BaseRequest, BaseResponse } from '../base';
 
 export interface ReqLogin extends BaseRequest {
@@ -6,12 +6,12 @@ export interface ReqLogin extends BaseRequest {
 }
 
 export interface ResLogin extends BaseResponse {
-    currentUserRole: UserRole,
+    user: DbUser,
     sso: string;
 }
 
 export type LoginTicket = {
-    type: 'account',
+    type: 'password',
     username: string,
     password: string,
 } | {

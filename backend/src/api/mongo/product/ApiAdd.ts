@@ -7,7 +7,7 @@ export async function ApiAdd(call: ApiCall<ReqAdd, ResAdd>) {
         ...call.req.product,
         create: {
             time: new Date,
-            uid: call.currentUid
+            uid: call.currentUser!._id
         }
     });
     call.succ({

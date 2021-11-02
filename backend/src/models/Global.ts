@@ -11,6 +11,7 @@ export class Global {
     static async init(logger?: Logger) {
         // 初始化 MongoDB 连接
         this.mongo = new MongoClient(backConfig.mongoUri);
+        await this.mongo.connect();
     }
 
     /** 

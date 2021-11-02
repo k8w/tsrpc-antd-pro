@@ -1,7 +1,7 @@
 import Footer from '@/components/Footer';
-import { LoginTicket } from '@/shared/protocols/user/PtlLogin';
 import { apiClient } from '@/models/apiClient/apiClient';
 import { useScopedClient } from '@/models/tsrpc-react/useScopedClient';
+import { LoginTicket } from '@/shared/protocols/user/PtlLogin';
 import {
   AlipayCircleOutlined,
   LockOutlined,
@@ -32,19 +32,11 @@ const LoginMessage: React.FC<{
 const Login: React.FC = () => {
   const [submitting, setSubmitting] = useState(false);
   const [errMsg, setErrMsg] = useState<string>();
-  const [type, setType] = useState<string>('account');
-  const { initialState, setInitialState } = useModel('@@initialState');
+  const [type, setType] = useState('password');
+  const { setInitialState } = useModel('@@initialState');
   const client = useScopedClient(apiClient);
 
-  const fetchUserInfo = async () => {
-    const userInfo = await initialState?.fetchUserInfo?.();
-
-    if (userInfo) {
-      await setInitialState((s) => ({ ...s, currentUser: userInfo }));
-    }
-  };
-
-  const handleSubmit = async (values: LoginParams) => {
+  const submitLogin = async (values: LoginParams) => {
     setSubmitting(true);  // 登录按钮开始转菊花
     let ret = await client.callApi('user/Login', {
       ticket: values
@@ -60,7 +52,7 @@ const Login: React.FC = () => {
     }
 
     message.success('登录成功！');
-    await fetchUserInfo();
+    setInitialState(v => ({ ...v, currentUser: ret.res?.user }))
 
     /** 此方法会跳转到 redirect 参数所在的位置 */
     if (!history) return;
@@ -103,20 +95,20 @@ const Login: React.FC = () => {
               },
             }}
             onFinish={async (values) => {
-              await handleSubmit({
+              await submitLogin({
                 ...values,
                 type: type
               } as LoginParams);
             }}
           >
             <Tabs activeKey={type} onChange={setType}>
-              <Tabs.TabPane key="account" tab={'账户密码登录'} />
+              <Tabs.TabPane key="password" tab={'账户密码登录'} />
               <Tabs.TabPane key="mobile" tab={'手机号登录'} />
             </Tabs>
 
             {errMsg && <LoginMessage content={errMsg} />}
 
-            {type === 'account' && (
+            {type === 'password' && (
               <>
                 <ProFormText
                   name="username"
@@ -138,7 +130,7 @@ const Login: React.FC = () => {
                     size: 'large',
                     prefix: <LockOutlined className={styles.prefixIcon} />,
                   }}
-                  placeholder={'密码: ant.design'}
+                  placeholder={'密码: admin or user'}
                   rules={[
                     {
                       required: true,
@@ -193,7 +185,6 @@ const Login: React.FC = () => {
                     },
                   ]}
                   onGetCaptcha={async (phone) => {
-                    // TEST
                     await new Promise(rs => { setTimeout(rs, 1000) })
                     message.success('获取验证码成功！验证码为：1234');
                   }}

@@ -202,7 +202,6 @@ export const routes: IConfigFromPlugins['routes'] = [
                 name: '个人页',
                 icon: 'user',
                 path: 'account',
-                access: 'canAdmin',
                 routes: [
                     {
                         name: '个人中心',

@@ -1,32 +1,3 @@
-import { uint } from "tsbuffer-schema";
-import { UserRole } from "./UserRole";
+import { DbUser } from "./db/DbUser";
 
-export interface CurrentUser {
-    name: string,
-    avatar: string,
-    userid: string,
-    email: string,
-    signature: string,
-    title: string,
-    group: string,
-    tags: {
-        key: string,
-        label: string,
-    }[],
-    notifyCount: uint,
-    unreadCount: uint,
-    country: string,
-    role: UserRole,
-    geographic: {
-        province: {
-            label: string,
-            key: string,
-        },
-        city: {
-            label: string,
-            key: string,
-        },
-    },
-    address: string,
-    phone: string,
-}
+export type CurrentUser = Pick<DbUser, '_id' | 'nickname' | 'roles' | 'createTime'>;

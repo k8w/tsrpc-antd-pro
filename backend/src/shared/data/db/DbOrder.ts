@@ -31,13 +31,13 @@ export interface DbOrder {
         /** 创建时间 */
         time: Date,
         /** 创建人 */
-        uid: string
+        uid: ObjectId
     },
     /** 更新时间、更新人 */
     update?: {
         /** 最后更新时间 */
         time: Date,
         /** 更新人 */
-        uid: string
+        uid: ObjectId
     },
 }

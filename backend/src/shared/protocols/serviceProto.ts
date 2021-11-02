@@ -94,7 +94,7 @@ export interface ServiceType {
 }
 
 export const serviceProto: ServiceProto<ServiceType> = {
-    "version": 13,
+    "version": 14,
     "services": [
         {
             "id": 24,
@@ -568,7 +568,8 @@ export const serviceProto: ServiceProto<ServiceType> = {
                                 "id": 2,
                                 "name": "uid",
                                 "type": {
-                                    "type": "String"
+                                    "type": "Reference",
+                                    "target": "?mongodb/ObjectId"
                                 }
                             }
                         ]
@@ -591,7 +592,8 @@ export const serviceProto: ServiceProto<ServiceType> = {
                                 "id": 2,
                                 "name": "uid",
                                 "type": {
-                                    "type": "String"
+                                    "type": "Reference",
+                                    "target": "?mongodb/ObjectId"
                                 }
                             }
                         ]
@@ -649,7 +651,8 @@ export const serviceProto: ServiceProto<ServiceType> = {
                                 "id": 2,
                                 "name": "uid",
                                 "type": {
-                                    "type": "String"
+                                    "type": "Reference",
+                                    "target": "?mongodb/ObjectId"
                                 }
                             }
                         ]
@@ -672,7 +675,8 @@ export const serviceProto: ServiceProto<ServiceType> = {
                                 "id": 2,
                                 "name": "uid",
                                 "type": {
-                                    "type": "String"
+                                    "type": "Reference",
+                                    "target": "?mongodb/ObjectId"
                                 }
                             }
                         ]
@@ -1363,181 +1367,76 @@ export const serviceProto: ServiceProto<ServiceType> = {
             ]
         },
         "../data/CurrentUser/CurrentUser": {
+            "target": {
+                "type": "Reference",
+                "target": "../data/db/DbUser/DbUser"
+            },
+            "keys": [
+                "_id",
+                "nickname",
+                "roles",
+                "createTime"
+            ],
+            "type": "Pick"
+        },
+        "../data/db/DbUser/DbUser": {
             "type": "Interface",
             "properties": [
                 {
                     "id": 0,
-                    "name": "name",
+                    "name": "_id",
                     "type": {
-                        "type": "String"
+                        "type": "Reference",
+                        "target": "?bson/ObjectId"
                     }
                 },
                 {
                     "id": 1,
-                    "name": "avatar",
+                    "name": "username",
                     "type": {
                         "type": "String"
-                    }
+                    },
+                    "optional": true
                 },
                 {
                     "id": 2,
-                    "name": "userid",
+                    "name": "password",
                     "type": {
                         "type": "String"
-                    }
+                    },
+                    "optional": true
                 },
                 {
                     "id": 3,
-                    "name": "email",
+                    "name": "mobile",
                     "type": {
                         "type": "String"
-                    }
+                    },
+                    "optional": true
                 },
                 {
                     "id": 4,
-                    "name": "signature",
+                    "name": "nickname",
                     "type": {
                         "type": "String"
                     }
                 },
                 {
                     "id": 5,
-                    "name": "title",
-                    "type": {
-                        "type": "String"
-                    }
-                },
-                {
-                    "id": 6,
-                    "name": "group",
-                    "type": {
-                        "type": "String"
-                    }
-                },
-                {
-                    "id": 7,
-                    "name": "tags",
+                    "name": "roles",
                     "type": {
                         "type": "Array",
                         "elementType": {
-                            "type": "Interface",
-                            "properties": [
-                                {
-                                    "id": 0,
-                                    "name": "key",
-                                    "type": {
-                                        "type": "String"
-                                    }
-                                },
-                                {
-                                    "id": 1,
-                                    "name": "label",
-                                    "type": {
-                                        "type": "String"
-                                    }
-                                }
-                            ]
+                            "type": "Reference",
+                            "target": "../data/UserRole/UserRole"
                         }
                     }
                 },
                 {
-                    "id": 8,
-                    "name": "notifyCount",
+                    "id": 6,
+                    "name": "createTime",
                     "type": {
-                        "type": "Number",
-                        "scalarType": "uint"
-                    }
-                },
-                {
-                    "id": 9,
-                    "name": "unreadCount",
-                    "type": {
-                        "type": "Number",
-                        "scalarType": "uint"
-                    }
-                },
-                {
-                    "id": 10,
-                    "name": "country",
-                    "type": {
-                        "type": "String"
-                    }
-                },
-                {
-                    "id": 11,
-                    "name": "role",
-                    "type": {
-                        "type": "Reference",
-                        "target": "../data/UserRole/UserRole"
-                    }
-                },
-                {
-                    "id": 12,
-                    "name": "geographic",
-                    "type": {
-                        "type": "Interface",
-                        "properties": [
-                            {
-                                "id": 0,
-                                "name": "province",
-                                "type": {
-                                    "type": "Interface",
-                                    "properties": [
-                                        {
-                                            "id": 0,
-                                            "name": "label",
-                                            "type": {
-                                                "type": "String"
-                                            }
-                                        },
-                                        {
-                                            "id": 1,
-                                            "name": "key",
-                                            "type": {
-                                                "type": "String"
-                                            }
-                                        }
-                                    ]
-                                }
-                            },
-                            {
-                                "id": 1,
-                                "name": "city",
-                                "type": {
-                                    "type": "Interface",
-                                    "properties": [
-                                        {
-                                            "id": 0,
-                                            "name": "label",
-                                            "type": {
-                                                "type": "String"
-                                            }
-                                        },
-                                        {
-                                            "id": 1,
-                                            "name": "key",
-                                            "type": {
-                                                "type": "String"
-                                            }
-                                        }
-                                    ]
-                                }
-                            }
-                        ]
-                    }
-                },
-                {
-                    "id": 13,
-                    "name": "address",
-                    "type": {
-                        "type": "String"
-                    }
-                },
-                {
-                    "id": 14,
-                    "name": "phone",
-                    "type": {
-                        "type": "String"
+                        "type": "Date"
                     }
                 }
             ]
@@ -1546,12 +1445,12 @@ export const serviceProto: ServiceProto<ServiceType> = {
             "type": "Enum",
             "members": [
                 {
-                    "id": 0,
-                    "value": "admin"
+                    "id": 2,
+                    "value": "管理员"
                 },
                 {
-                    "id": 1,
-                    "value": "user"
+                    "id": 3,
+                    "value": "普通用户"
                 }
             ]
         },
@@ -1585,38 +1484,8 @@ export const serviceProto: ServiceProto<ServiceType> = {
                     "type": {
                         "type": "Array",
                         "elementType": {
-                            "type": "Interface",
-                            "properties": [
-                                {
-                                    "id": 0,
-                                    "name": "key",
-                                    "type": {
-                                        "type": "String"
-                                    }
-                                },
-                                {
-                                    "id": 1,
-                                    "name": "name",
-                                    "type": {
-                                        "type": "String"
-                                    }
-                                },
-                                {
-                                    "id": 2,
-                                    "name": "age",
-                                    "type": {
-                                        "type": "Number",
-                                        "scalarType": "uint"
-                                    }
-                                },
-                                {
-                                    "id": 3,
-                                    "name": "address",
-                                    "type": {
-                                        "type": "String"
-                                    }
-                                }
-                            ]
+                            "type": "Reference",
+                            "target": "../data/db/DbUser/DbUser"
                         }
                     }
                 }
@@ -1648,7 +1517,7 @@ export const serviceProto: ServiceProto<ServiceType> = {
             "type": "Union",
             "members": [
                 {
-                    "id": 4,
+                    "id": 6,
                     "type": {
                         "type": "Interface",
                         "properties": [
@@ -1657,7 +1526,7 @@ export const serviceProto: ServiceProto<ServiceType> = {
                                 "name": "type",
                                 "type": {
                                     "type": "Literal",
-                                    "literal": "account"
+                                    "literal": "password"
                                 }
                             },
                             {
@@ -1722,11 +1591,11 @@ export const serviceProto: ServiceProto<ServiceType> = {
             ],
             "properties": [
                 {
-                    "id": 0,
-                    "name": "currentUserRole",
+                    "id": 2,
+                    "name": "user",
                     "type": {
                         "type": "Reference",
-                        "target": "../data/UserRole/UserRole"
+                        "target": "../data/db/DbUser/DbUser"
                     }
                 },
                 {

@@ -1,17 +1,12 @@
-import { uint } from 'tsbuffer-schema';
-import { BaseRequest, BaseResponse, BaseConf } from '../base'
+import { DbUser } from '../../data/db/DbUser';
+import { BaseConf, BaseRequest, BaseResponse } from '../base';
 
 export interface ReqGetUsers extends BaseRequest {
-    
+
 }
 
 export interface ResGetUsers extends BaseResponse {
-    users: {
-        key: string,
-        name: string,
-        age: uint,
-        address: string,
-    }[]
+    users: DbUser[]
 }
 
 export const conf: BaseConf = {

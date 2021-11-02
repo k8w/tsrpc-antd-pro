@@ -8,7 +8,7 @@ export async function ApiAdd(call: ApiCall<ReqAdd, ResAdd>) {
         ...call.req.order,
         create: {
             time: new Date(),
-            uid: call.currentUid
+            uid: call.currentUser!._id
         }
     });
 

@@ -1,8 +1,10 @@
 import 'k8w-extend-native';
 import * as path from "path";
 import { HttpServer } from "tsrpc";
+import { serveStaticFiles } from "./models/flows/serveStaticFiles";
+import { userAndRoles } from './models/flows/userAndRoles';
 import { Global } from './models/Global';
-import { serveStaticFiles } from "./models/serveStaticFiles";
+import { CurrentUser } from './shared/data/CurrentUser';
 import { serviceProto } from "./shared/protocols/serviceProto";
 
 // Create the Server
@@ -11,18 +13,14 @@ const server = new HttpServer(serviceProto, {
     cors: '*'
 });
 
-// 扩展 Call 自定义字段
-declare module 'tsrpc' {
-    export interface ApiCall {
-        /** 当前登录的用户 uid（未登录为 ''） */
-        currentUid: string;
-    }
-}
+
 
 // Entry function
 async function main() {
     // Extends Flow
-    // Static file server for '/uploads/*'
+    // 扩展 call.currentUser，自动检测登录和权限
+    await userAndRoles(server);
+    // 静态文件服务（访问上传的文件）
     await serveStaticFiles(server, '/uploads/', 'uploads')
 
     // Auto implement APIs

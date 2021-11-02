@@ -12,7 +12,7 @@ export async function ApiUpdate(call: ApiCall<ReqUpdate, ResUpdate>) {
             // 更新时间、更新人
             update: {
                 time: new Date(),
-                uid: call.currentUid
+                uid: call.currentUser!._id
             }
         }
     });
