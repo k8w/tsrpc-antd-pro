@@ -1,5 +1,6 @@
 import { apiClient } from "@/models/apiClient/apiClient"
 import { useScopedClient } from "@/models/tsrpc-react/useScopedClient"
+import { UIUtil } from "@/models/UIUtil"
 import { DbProduct } from "@/shared/data/db/DbProduct"
 import { ReqAdd } from "@/shared/protocols/mongo/product/PtlAdd"
 import { ModalForm, ProFormMoney, ProFormText, ProFormTextArea } from "@ant-design/pro-form"
@@ -12,20 +13,17 @@ export default () => {
     const client = useScopedClient(apiClient);
 
     /** 编辑弹窗 */
-    const [editing, setEditing] = useState<{ key: number } & (
-        { type: 'add', value: ReqAdd['product'] } | { type: 'update', value: DbProduct } | { type?: undefined, value?: undefined }
-    )>({ key: 0 });
+    const [editing, setEditing] = useState<{ type: 'add', value: ReqAdd['product'] } | { type: 'update', value: DbProduct }>();
 
     const tableRef = useRef<ActionType>();
 
     return <PageContainer>
         <ProTable<DbProduct>
             actionRef={tableRef}
-            headerTitle='产品管理'
+            headerTitle='商品管理'
             search={false}
             toolBarRender={() => [<Button type='primary' onClick={() => {
                 setEditing({
-                    key: editing.key + 1,
                     type: 'add',
                     value: {
                         name: '',
@@ -33,7 +31,7 @@ export default () => {
                         price: 0
                     }
                 });
-            }}>新建产品</Button>]}
+            }}>新建商品</Button>]}
             columns={[
                 { dataIndex: '_id', title: 'ID' },
                 { dataIndex: 'name', title: '商品名' },
@@ -45,24 +43,33 @@ export default () => {
                     title: '操作',
                     render: (_, v) => <>
                         <Button type='link' size='small' onClick={() => {
-                            console.log('sss', v)
                             setEditing({
-                                key: editing.key + 1,
                                 type: 'update',
                                 value: v
                             })
                         }}>修改</Button>
-                        <Button type='link' size='small'>删除</Button>
+                        <Button type='link' size='small' onClick={async () => {
+                            if (!await UIUtil.confirm(<>确认要删除 <b>{v.name}</b> 吗？</>)) {
+                                return;
+                            }
+
+                            let ret = await client.callApi('mongo/product/Del', {
+                                _ids: [v._id]
+                            });
+                            if (!ret.isSucc) {
+                                message.error('删除失败');
+                                return;
+                            }
+                            tableRef.current?.reload();
+                        }}>删除</Button>
                     </>
                 }
             ]}
             rowKey='_id'
             request={params => client.callApi('mongo/product/Get', params).then(v => ({ ...v.res, success: v.isSucc }))}
         />
-        <ModalForm visible={!!editing.value}
+        {editing && <ModalForm visible
             onFinish={async (v: any) => {
-                console.log('finish', v);
-
                 if (editing.type === 'add') {
                     let ret = await client.callApi('mongo/product/Add', {
                         product: v
@@ -75,7 +82,7 @@ export default () => {
 
                     message.success('创建成功');
                 }
-                else {
+                else if (editing.type === 'update') {
                     let ret = await client.callApi('mongo/product/Update', {
                         update: v
                     });
@@ -89,17 +96,16 @@ export default () => {
                 }
 
                 // reload
-                setEditing({ ...editing, type: undefined, value: undefined });
+                setEditing(undefined);
                 tableRef.current?.reload();
             }}
-            request={async () => editing.value}
-            key={editing.key}
-            onVisibleChange={v => { if (!v) { setEditing({ ...editing, value: undefined, type: undefined }) } }}
+            initialValues={editing.value}
+            onVisibleChange={v => { if (!v) { setEditing(undefined) } }}
         >
             <ProFormText name='_id' label='ID' hidden />
             <ProFormText name='name' label='商品名' rules={[{ required: true }]} />
             <ProFormTextArea name='desc' label='商品描述' rules={[{ required: true }]} />
             <ProFormMoney name='price' label='单价' rules={[{ required: true }]} />
-        </ModalForm>
+        </ModalForm>}
     </PageContainer>
 }

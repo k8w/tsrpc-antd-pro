@@ -35,9 +35,20 @@ export const routes: IConfigFromPlugins['routes'] = [
         icon: 'database',
         routes: [
             {
-                path: 'product',
-                name: '产品管理',
-                component: './mongo/product'
+                path: 'crud',
+                name: '增删改查',
+                routes: [
+                    {
+                        path: 'product',
+                        name: '商品管理',
+                        component: './mongo/crud/product'
+                    },
+                    {
+                        path: 'order',
+                        name: '订单管理',
+                        component: './mongo/crud/order'
+                    },
+                ]
             },
             {
                 path: 'join',

@@ -2,6 +2,7 @@ import { ApiCall } from "tsrpc";
 import { Global } from "../../../models/Global";
 import { ReqGetProductWithOrders, ResGetProductWithOrders } from "../../../shared/protocols/mongo/advanced/PtlGetProductWithOrders";
 
+// 用多次查询替代 JOIN 的例子
 export async function ApiGetProductWithOrders(call: ApiCall<ReqGetProductWithOrders, ResGetProductWithOrders>) {
     const current = call.req.current ?? 1;
     const pageSize = call.req.pageSize ?? 100;

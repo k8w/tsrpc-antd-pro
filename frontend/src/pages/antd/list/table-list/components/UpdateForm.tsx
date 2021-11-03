@@ -1,13 +1,11 @@
-import React from 'react';
-import { Modal } from 'antd';
 import {
-  ProFormSelect,
+  ProFormDateTimePicker, ProFormRadio, ProFormSelect,
   ProFormText,
   ProFormTextArea,
-  StepsForm,
-  ProFormRadio,
-  ProFormDateTimePicker,
+  StepsForm
 } from '@ant-design/pro-form';
+import { Modal } from 'antd';
+import React from 'react';
 import type { TableListItem } from '../data';
 
 export type FormValueType = {
