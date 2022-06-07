@@ -3,7 +3,7 @@ import { ObjectId } from 'mongodb';
 /**
  * 订单
  */
-interface DbOrder {
+export interface DbOrder {
     _id: ObjectId;
 
     /** 订单内的产品 */
